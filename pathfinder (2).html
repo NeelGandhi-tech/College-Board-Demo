@@ -1,0 +1,1313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BigFuture Pathfinder — College Planning</title>
+<meta name="description" content="Personalized college planning. Find schools that fit you, understand your options, and know what to do next.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ── College Board design tokens ─────────────────────────────
+   Extracted from bigfuture.collegeboard.org & collegeboard.org
+   Primary:  CB Navy   #1e3a5f  (headers, nav bg, CTAs)
+   Link/Int: CB Blue   #0077c8  (interactive, links, rings)
+   Accent:   CB Teal   #00b388  (success, "good fit", positive)
+   Text:     CB Dark   #1a1a1a  (body copy)
+   Muted:    CB Mid    #555555  (secondary text)
+   Surface:  CB Cream  #f5f5f0  (page bg — their actual bg)
+   Card:     #ffffff
+   Border:   #d1d5db   (their standard divider gray)
+   Warn:     #d97706   amber
+   Danger:   #b91c1c   red
+   Purple:   #6b21a8   reach schools
+──────────────────────────────────────────────────────────── */
+:root {
+  --navy:      #1e3a5f;
+  --navy-dk:   #152b47;
+  --navy-lt:   #2d5086;
+  --cb-blue:   #0077c8;
+  --cb-blue-lt:#e8f4fc;
+  --cb-blue-md:#b3d9f4;
+  --teal:      #00b388;
+  --teal-lt:   #e6f7f3;
+  --teal-md:   #99dece;
+  --amber:     #d97706;
+  --amber-lt:  #fef3c7;
+  --red:       #b91c1c;
+  --red-lt:    #fef2f2;
+  --purple:    #6b21a8;
+  --purple-lt: #f5f3ff;
+  --gray-50:   #f5f5f0;
+  --gray-100:  #ebebeb;
+  --gray-200:  #d1d5db;
+  --gray-400:  #9ca3af;
+  --gray-500:  #6b7280;
+  --gray-700:  #374151;
+  --white:     #ffffff;
+  --text:      #1a1a1a;
+  --muted:     #555555;
+  --faint:     #9ca3af;
+  --border:    #d1d5db;
+  --border-lt: #e5e7eb;
+  --r-sm:  4px;
+  --r-md:  8px;
+  --r-lg:  12px;
+  --r-xl:  16px;
+  --r-2xl: 24px;
+  --font: 'Source Sans 3', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --sh-card: 0 1px 4px rgba(0,0,0,0.08), 0 0 0 1px rgba(0,0,0,0.04);
+  --sh-md:   0 4px 16px rgba(0,0,0,0.1), 0 1px 4px rgba(0,0,0,0.06);
+  --sh-lg:   0 12px 40px rgba(0,0,0,0.14);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: var(--font);
+  background: var(--gray-50);
+  color: var(--text);
+  font-size: 16px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── NAV ───────────────────────────────────────────────────── */
+.nav {
+  background: var(--navy);
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+.nav-logo { display: flex; align-items: center; gap: 10px; cursor: pointer; text-decoration: none; }
+.logo-mark {
+  width: 34px; height: 34px;
+  background: var(--teal);
+  border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.logo-mark svg { width: 20px; height: 20px; fill: white; }
+.logo-text { color: white; }
+.logo-text .brand { font-size: 16px; font-weight: 700; letter-spacing: -0.01em; }
+.logo-text .brand span { color: var(--teal); }
+.logo-text .sub { font-size: 11px; color: rgba(255,255,255,0.6); margin-top: -1px; }
+.nav-links { display: flex; gap: 2px; }
+.nav-link {
+  padding: 6px 14px; border-radius: var(--r-md);
+  font-size: 13.5px; font-weight: 500;
+  color: rgba(255,255,255,0.75);
+  cursor: pointer; border: none; background: transparent;
+  transition: all 0.15s; white-space: nowrap; font-family: var(--font);
+}
+.nav-link:hover { background: rgba(255,255,255,0.1); color: white; }
+.nav-link.active { background: rgba(0,179,136,0.25); color: white; }
+.nav-right { display: flex; align-items: center; gap: 10px; }
+.nav-share {
+  display: flex; align-items: center; gap: 6px;
+  background: var(--teal); color: white;
+  border: none; padding: 8px 18px; border-radius: var(--r-md);
+  font-size: 13.5px; font-weight: 600; cursor: pointer;
+  font-family: var(--font); transition: opacity 0.15s;
+  letter-spacing: 0.01em;
+}
+.nav-share:hover { opacity: 0.9; }
+.nav-avatar {
+  width: 34px; height: 34px;
+  background: rgba(255,255,255,0.15);
+  border: 2px solid rgba(255,255,255,0.3);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: white; font-size: 13px; font-weight: 700; cursor: pointer;
+}
+
+/* ── SCREENS ──────────────────────────────────────────────── */
+.screen { display: none; }
+.screen.active { display: block; }
+.page { max-width: 1000px; margin: 0 auto; padding: 2.5rem 1.5rem 5rem; }
+
+/* ── LANDING ──────────────────────────────────────────────── */
+.hero {
+  background: var(--navy);
+  color: white;
+  padding: 5rem 2rem 4.5rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--teal), var(--cb-blue), var(--teal));
+}
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 7px;
+  background: rgba(0,179,136,0.2);
+  border: 1px solid rgba(0,179,136,0.4);
+  color: var(--teal);
+  font-size: 12px; font-weight: 700; letter-spacing: 0.1em;
+  text-transform: uppercase; padding: 5px 16px; border-radius: 20px;
+  margin-bottom: 1.75rem;
+}
+.hero h1 {
+  font-size: clamp(32px, 5vw, 54px);
+  font-weight: 700; line-height: 1.15;
+  max-width: 680px; margin: 0 auto 1.25rem;
+  letter-spacing: -0.02em;
+}
+.hero h1 em { font-style: normal; color: var(--teal); }
+.hero p {
+  font-size: 18px; color: rgba(255,255,255,0.75);
+  max-width: 500px; margin: 0 auto 2.5rem; line-height: 1.65;
+}
+.hero-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+.btn-hero-primary {
+  background: var(--teal); color: white;
+  border: none; padding: 14px 30px; border-radius: var(--r-md);
+  font-size: 16px; font-weight: 700; cursor: pointer;
+  font-family: var(--font); transition: opacity 0.15s;
+  box-shadow: 0 4px 14px rgba(0,179,136,0.4);
+}
+.btn-hero-primary:hover { opacity: 0.9; }
+.btn-hero-ghost {
+  background: transparent; color: white;
+  border: 2px solid rgba(255,255,255,0.35);
+  padding: 14px 30px; border-radius: var(--r-md);
+  font-size: 16px; font-weight: 600; cursor: pointer;
+  font-family: var(--font); transition: all 0.15s;
+}
+.btn-hero-ghost:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.6); }
+.hero-proof {
+  display: flex; gap: 0; justify-content: center;
+  margin-top: 4rem; flex-wrap: wrap;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  padding-top: 2.5rem;
+}
+.proof-item {
+  padding: 0 2.5rem; text-align: center;
+  border-right: 1px solid rgba(255,255,255,0.12);
+}
+.proof-item:last-child { border-right: none; }
+.proof-num { font-size: 30px; font-weight: 700; color: var(--teal); }
+.proof-label { font-size: 13px; color: rgba(255,255,255,0.6); margin-top: 3px; }
+
+/* LANDING CARDS */
+.landing-cards {
+  background: white;
+  padding: 4rem 1.5rem;
+}
+.landing-cards-inner { max-width: 900px; margin: 0 auto; }
+.lc-header { text-align: center; margin-bottom: 2.5rem; }
+.lc-header h2 { font-size: 28px; font-weight: 700; color: var(--navy); margin-bottom: 8px; }
+.lc-header p { color: var(--muted); font-size: 16px; }
+.lc-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; }
+.lc-card {
+  background: var(--gray-50); border-radius: var(--r-xl);
+  border: 1px solid var(--border-lt); padding: 1.75rem;
+  transition: all 0.15s;
+}
+.lc-card:hover { border-color: var(--cb-blue-md); box-shadow: var(--sh-md); transform: translateY(-2px); }
+.lc-icon { font-size: 28px; margin-bottom: 0.75rem; }
+.lc-card h3 { font-size: 17px; font-weight: 700; color: var(--navy); margin-bottom: 6px; }
+.lc-card p { font-size: 14px; color: var(--muted); line-height: 1.6; }
+.lc-card-link {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 14px; font-weight: 600; color: var(--cb-blue);
+  margin-top: 12px; cursor: pointer; background: none; border: none;
+  font-family: var(--font); padding: 0;
+}
+.lc-card-link:hover { text-decoration: underline; }
+
+/* ── SHARED COMPONENTS ─────────────────────────────────────── */
+.section-label {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 14px; margin-top: 2.5rem;
+}
+.section-label h3 {
+  font-size: 13px; font-weight: 700;
+  letter-spacing: 0.07em; text-transform: uppercase;
+  color: var(--muted);
+}
+.count-badge {
+  font-size: 11px; font-weight: 600;
+  background: var(--gray-100); color: var(--gray-500);
+  padding: 2px 8px; border-radius: 20px;
+}
+
+/* ── SURVEY CALLOUT ─────────────────────────────────────────── */
+.data-bar {
+  background: var(--navy);
+  border-radius: var(--r-xl);
+  padding: 1.5rem 2rem;
+  display: flex; align-items: center; gap: 1.5rem;
+  margin-bottom: 2rem; flex-wrap: wrap; gap: 1.25rem;
+}
+.data-bar-copy h3 { font-size: 15px; font-weight: 700; color: white; margin-bottom: 4px; }
+.data-bar-copy p { font-size: 13px; color: rgba(255,255,255,0.65); line-height: 1.5; }
+.data-bar-stats { display: flex; gap: 1.25rem; margin-left: auto; flex-wrap: wrap; }
+.db-stat { text-align: center; }
+.db-num { font-size: 22px; font-weight: 700; color: var(--teal); }
+.db-label { font-size: 11px; color: rgba(255,255,255,0.55); margin-top: 2px; line-height: 1.3; }
+
+/* ── DASHBOARD HEADER ─────────────────────────────────────── */
+.dash-head {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: var(--r-xl);
+  padding: 1.5rem 2rem;
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 2rem; gap: 1rem; flex-wrap: wrap;
+  box-shadow: var(--sh-card);
+}
+.dh-left h2 { font-size: 22px; font-weight: 700; color: var(--navy); margin-bottom: 4px; }
+.dh-left p { font-size: 14px; color: var(--muted); }
+.dh-stats { display: flex; gap: 1.75rem; align-items: center; }
+.dh-stat .num { font-size: 22px; font-weight: 700; color: var(--navy); }
+.dh-stat .lbl { font-size: 11px; color: var(--muted); margin-top: 1px; }
+.dh-sep { width: 1px; height: 38px; background: var(--border); }
+
+/* ── COLLEGE GRID + CARD ──────────────────────────────────── */
+.college-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.cc {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: var(--r-xl);
+  padding: 1.25rem 1.5rem;
+  box-shadow: var(--sh-card);
+  transition: box-shadow 0.15s, border-color 0.15s;
+}
+.cc:hover { box-shadow: var(--sh-md); border-color: var(--gray-400); }
+.cc.saved { border-color: var(--cb-blue); border-width: 2px; }
+.cc-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; margin-bottom: 10px; }
+.cc-name { font-size: 16px; font-weight: 700; color: var(--navy); line-height: 1.25; }
+.cc-loc { font-size: 13px; color: var(--muted); margin-top: 3px; }
+/* Score ring */
+.ring-wrap { flex-shrink: 0; position: relative; width: 46px; height: 46px; }
+.ring-wrap svg { transform: rotate(-90deg); }
+.ring-num { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); font-size: 11px; font-weight: 700; color: var(--navy); }
+/* Tags */
+.tags { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 10px; }
+.tag { font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 20px; line-height: 1.4; }
+.t-reach   { background: var(--purple-lt); color: var(--purple); }
+.t-target  { background: var(--cb-blue-lt); color: var(--cb-blue); }
+.t-safety  { background: var(--teal-lt); color: var(--teal); }
+.t-major   { background: var(--gray-100); color: var(--gray-700); }
+.t-aff-g   { background: var(--teal-lt); color: var(--teal); }
+.t-aff-w   { background: var(--amber-lt); color: var(--amber); }
+.t-aff-b   { background: var(--red-lt); color: var(--red); }
+/* Explain */
+.cc-text { font-size: 13.5px; color: var(--muted); line-height: 1.6; margin-bottom: 12px; }
+/* Career box */
+.career-box {
+  background: var(--gray-50);
+  border: 1px solid var(--border-lt);
+  border-radius: var(--r-lg);
+  padding: 10px 12px; margin-bottom: 14px;
+}
+.career-box-title {
+  font-size: 11px; font-weight: 700; color: var(--muted);
+  text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 7px;
+}
+.career-pills { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 8px; }
+.career-pill {
+  font-size: 11.5px; padding: 3px 9px;
+  border-radius: 20px; background: white;
+  border: 1px solid var(--border); color: var(--gray-700); font-weight: 500;
+}
+.outcomes-row { display: flex; gap: 12px; flex-wrap: wrap; }
+.out-item { font-size: 12px; color: var(--muted); }
+.out-item strong { color: var(--navy); font-weight: 700; }
+/* Card actions */
+.cc-acts { display: flex; gap: 6px; flex-wrap: wrap; }
+.cc-btn {
+  font-size: 13px; font-weight: 600;
+  padding: 6px 14px; border-radius: var(--r-md);
+  border: 1.5px solid var(--border);
+  background: transparent; color: var(--muted);
+  cursor: pointer; transition: all 0.15s; font-family: var(--font);
+}
+.cc-btn:hover { background: var(--gray-100); color: var(--text); border-color: var(--gray-400); }
+.cc-btn.save { background: var(--cb-blue-lt); color: var(--cb-blue); border-color: var(--cb-blue-md); }
+.cc-btn.saved { background: var(--teal-lt); color: var(--teal); border-color: var(--teal-md); }
+
+/* ── GUIDE (dashboard) ─────────────────────────────────────── */
+.guide-card {
+  background: white; border: 1px solid var(--border);
+  border-radius: var(--r-xl); padding: 1.5rem;
+  box-shadow: var(--sh-card); margin-top: 1.75rem;
+}
+.guide-head { display: flex; align-items: center; gap: 12px; margin-bottom: 1.125rem; }
+.guide-icon {
+  width: 36px; height: 36px; background: var(--navy);
+  border-radius: 10px; display: flex; align-items: center;
+  justify-content: center; color: var(--teal); font-size: 17px; flex-shrink: 0;
+}
+.guide-head-text h3 { font-size: 15px; font-weight: 700; color: var(--navy); }
+.guide-head-text p { font-size: 12px; color: var(--muted); }
+.guide-msgs { max-height: 200px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px; }
+.gm { font-size: 14px; line-height: 1.6; padding: 10px 14px; border-radius: 10px; max-width: 90%; }
+.gm.bot { background: var(--gray-50); border: 1px solid var(--border-lt); color: var(--text); align-self: flex-start; }
+.gm.usr { background: var(--navy); color: white; align-self: flex-end; }
+.guide-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+.guide-chip {
+  font-size: 13px; padding: 5px 13px;
+  border: 1.5px solid var(--cb-blue-md); border-radius: 20px;
+  color: var(--cb-blue); background: transparent;
+  cursor: pointer; transition: background 0.12s; font-family: var(--font); font-weight: 500;
+}
+.guide-chip:hover { background: var(--cb-blue-lt); }
+.guide-row { display: flex; gap: 8px; }
+.guide-input {
+  flex: 1; font-size: 14px; padding: 9px 14px;
+  border: 1.5px solid var(--border); border-radius: var(--r-md);
+  background: white; color: var(--text); font-family: var(--font); outline: none;
+}
+.guide-input:focus { border-color: var(--cb-blue); box-shadow: 0 0 0 3px rgba(0,119,200,0.1); }
+.guide-send {
+  background: var(--navy); color: white; border: none;
+  padding: 9px 20px; border-radius: var(--r-md);
+  font-size: 14px; font-weight: 700; cursor: pointer; font-family: var(--font); transition: opacity 0.15s;
+}
+.guide-send:hover { opacity: 0.85; }
+
+/* ── CHECKLIST ─────────────────────────────────────────────── */
+.checklist-card {
+  background: white; border: 1px solid var(--border);
+  border-radius: var(--r-xl); padding: 1.5rem;
+  box-shadow: var(--sh-card); margin-top: 1.75rem;
+}
+.cl-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 4px; }
+.cl-header h3 { font-size: 16px; font-weight: 700; color: var(--navy); }
+.cl-progress-label { font-size: 13px; color: var(--muted); }
+.cl-sub { font-size: 13.5px; color: var(--muted); margin-bottom: 14px; }
+.cl-track { height: 6px; background: var(--gray-100); border-radius: 3px; margin-bottom: 1.25rem; overflow: hidden; }
+.cl-fill { height: 6px; background: var(--teal); border-radius: 3px; transition: width 0.4s; }
+.cl-item { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--border-lt); cursor: pointer; }
+.cl-item:last-child { border-bottom: none; }
+.cl-box {
+  width: 22px; height: 22px; border-radius: 5px;
+  border: 2px solid var(--border); flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center; transition: all 0.15s;
+}
+.cl-box.done { background: var(--teal); border-color: var(--teal); }
+.cl-checkmark { display: none; }
+.cl-box.done .cl-checkmark { display: block; }
+.cl-text { font-size: 14px; color: var(--text); }
+.cl-text.done { text-decoration: line-through; color: var(--muted); }
+
+/* ── ONBOARDING ─────────────────────────────────────────────── */
+.ob-page { max-width: 600px; margin: 0 auto; padding: 2.5rem 1.5rem 5rem; }
+.ob-heading { text-align: center; margin-bottom: 2rem; }
+.ob-heading h2 { font-size: 26px; font-weight: 700; color: var(--navy); margin-bottom: 8px; }
+.ob-heading p { font-size: 15px; color: var(--muted); }
+.prog-meta { display: flex; justify-content: space-between; font-size: 13px; color: var(--muted); margin-bottom: 8px; font-weight: 500; }
+.prog-track { height: 5px; background: var(--gray-200); border-radius: 3px; margin-bottom: 2rem; overflow: hidden; }
+.prog-fill { height: 5px; background: var(--cb-blue); border-radius: 3px; transition: width 0.35s ease; }
+.q-card {
+  background: white; border-radius: var(--r-xl);
+  border: 1px solid var(--border); padding: 2rem 2rem 1.75rem;
+  box-shadow: var(--sh-md); margin-bottom: 1.25rem;
+}
+.q-step { font-size: 11px; font-weight: 700; color: var(--cb-blue); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 6px; }
+.q-question { font-size: 21px; font-weight: 700; color: var(--navy); line-height: 1.3; margin-bottom: 5px; }
+.q-hint {
+  font-size: 13.5px; color: var(--muted);
+  background: var(--cb-blue-lt); border-radius: var(--r-md);
+  padding: 7px 12px; margin-bottom: 1.5rem;
+  border-left: 3px solid var(--cb-blue);
+}
+.q-opts { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.q-opt {
+  display: flex; align-items: center; gap: 12px;
+  padding: 13px 16px; border-radius: var(--r-lg);
+  border: 2px solid var(--border);
+  background: white; color: var(--text);
+  font-size: 14.5px; font-weight: 500;
+  cursor: pointer; transition: all 0.12s;
+  text-align: left; font-family: var(--font);
+}
+.q-opt:hover { border-color: var(--cb-blue); background: var(--cb-blue-lt); color: var(--cb-blue); }
+.q-opt.sel { border-color: var(--navy); background: var(--navy); color: white; }
+.q-opt.sel .q-radio { background: var(--teal); border-color: var(--teal); }
+.q-opt.sel .q-radio::after { display: block; }
+.q-opt.sel .q-career { color: rgba(255,255,255,0.7); }
+.q-radio {
+  width: 20px; height: 20px; border-radius: 50%;
+  border: 2px solid var(--border); flex-shrink: 0;
+  position: relative; transition: all 0.12s;
+}
+.q-radio::after {
+  content: ''; display: none;
+  width: 8px; height: 8px; background: white;
+  border-radius: 50%; position: absolute;
+  top: 50%; left: 50%; transform: translate(-50%,-50%);
+}
+.q-icon { font-size: 20px; width: 26px; text-align: center; flex-shrink: 0; }
+.q-label-wrap { flex: 1; }
+.q-label { font-weight: 600; }
+.q-career { font-size: 12px; color: var(--muted); font-weight: 400; margin-top: 2px; }
+.q-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 1rem; }
+.btn-skip {
+  font-size: 14px; color: var(--muted); cursor: pointer;
+  background: none; border: none; padding: 8px; font-family: var(--font);
+}
+.btn-skip:hover { color: var(--text); }
+.btn-continue {
+  background: var(--navy); color: white; border: none;
+  padding: 11px 28px; border-radius: var(--r-md);
+  font-size: 15px; font-weight: 700; cursor: pointer;
+  font-family: var(--font); transition: opacity 0.15s; letter-spacing: 0.01em;
+}
+.btn-continue:hover { opacity: 0.85; }
+
+/* ── COMPARE ───────────────────────────────────────────────── */
+.compare-pills { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 1.5rem; }
+.cpill {
+  padding: 7px 18px; border-radius: 20px;
+  border: 2px solid var(--border);
+  font-size: 13.5px; font-weight: 600;
+  cursor: pointer; background: white; color: var(--muted);
+  transition: all 0.12s; font-family: var(--font);
+}
+.cpill:hover { border-color: var(--cb-blue); color: var(--cb-blue); }
+.cpill.sel { background: var(--navy); color: white; border-color: var(--navy); }
+.compare-wrap {
+  background: white; border-radius: var(--r-xl);
+  border: 1px solid var(--border); overflow: auto;
+  box-shadow: var(--sh-card);
+}
+.compare-wrap table { width: 100%; border-collapse: collapse; min-width: 540px; }
+.compare-wrap th {
+  padding: 1rem 1.25rem; text-align: left;
+  font-size: 15px; font-weight: 700; color: var(--navy);
+  border-bottom: 2px solid var(--border); background: var(--gray-50);
+}
+.compare-wrap th:first-child {
+  font-size: 11px; font-weight: 700; color: var(--muted);
+  text-transform: uppercase; letter-spacing: 0.06em; width: 160px;
+}
+.compare-wrap td { padding: 0.875rem 1.25rem; font-size: 14px; border-bottom: 1px solid var(--border-lt); vertical-align: middle; }
+.compare-wrap tr:last-child td { border-bottom: none; }
+.compare-wrap td:first-child { font-size: 12px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; }
+.compare-wrap tr:nth-child(even) td { background: #fafafa; }
+.sbar-wrap { display: flex; align-items: center; gap: 8px; }
+.sbar-track { width: 70px; height: 7px; background: var(--gray-200); border-radius: 4px; }
+.sbar-fill { height: 7px; background: var(--cb-blue); border-radius: 4px; }
+.act-pill { font-size: 12px; font-weight: 700; padding: 4px 11px; border-radius: 4px; }
+.ap-add    { background: var(--cb-blue-lt); color: var(--cb-blue); }
+.ap-aid    { background: var(--amber-lt);   color: var(--amber); }
+.ap-ask    { background: var(--purple-lt);  color: var(--purple); }
+.ap-remove { background: var(--red-lt);     color: var(--red); }
+
+/* ── AFFORDABILITY ─────────────────────────────────────────── */
+.afford-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 1.5rem; }
+.afford-card {
+  background: white; border-radius: var(--r-xl);
+  border: 1px solid var(--border); padding: 1.25rem 1.5rem;
+  box-shadow: var(--sh-card);
+}
+.aff-sig { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+.sig-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+.sig-g { background: var(--teal); }
+.sig-w { background: var(--amber); }
+.sig-b { background: var(--red); }
+.sig-label { font-size: 12.5px; font-weight: 700; }
+.slt-g { color: var(--teal); }
+.slt-w { color: var(--amber); }
+.slt-b { color: var(--red); }
+.aff-name { font-size: 16px; font-weight: 700; color: var(--navy); margin-bottom: 3px; }
+.aff-cost { font-size: 28px; font-weight: 700; color: var(--text); }
+.aff-cost-sub { font-size: 12px; color: var(--muted); margin-bottom: 12px; }
+.aff-steps { display: flex; flex-direction: column; gap: 5px; }
+.aff-step { font-size: 13px; color: var(--muted); display: flex; align-items: center; gap: 7px; }
+.aff-arrow { color: var(--cb-blue); font-weight: 700; }
+.sch-card {
+  background: white; border-radius: var(--r-xl);
+  border: 1px solid var(--border); padding: 0;
+  box-shadow: var(--sh-card); overflow: hidden;
+}
+.sch-item { padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--border-lt); }
+.sch-item:last-child { border-bottom: none; }
+.sch-row1 { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 4px; }
+.sch-name { font-size: 15px; font-weight: 700; color: var(--navy); }
+.sch-org { font-size: 13px; color: var(--muted); }
+.sch-amt { font-size: 16px; font-weight: 700; color: var(--cb-blue); white-space: nowrap; }
+.sch-dl { font-size: 13px; color: var(--muted); margin-bottom: 10px; }
+.sch-dl strong { color: var(--amber); font-weight: 700; }
+.sch-acts { display: flex; gap: 6px; }
+.sch-btn {
+  font-size: 13px; font-weight: 600; padding: 6px 14px;
+  border: 1.5px solid var(--border); border-radius: var(--r-md);
+  cursor: pointer; background: transparent; color: var(--muted);
+  transition: all 0.12s; font-family: var(--font);
+}
+.sch-btn:hover { background: var(--gray-100); color: var(--text); }
+.sch-btn.saved { background: var(--teal-lt); color: var(--teal); border-color: var(--teal-md); }
+
+/* ── AI COUNSELOR ──────────────────────────────────────────── */
+.ac-layout { display: grid; grid-template-columns: 300px 1fr; gap: 18px; align-items: start; }
+/* sidebar */
+.ac-sidebar { display: flex; flex-direction: column; gap: 14px; }
+.ac-profile {
+  background: white; border: 1px solid var(--border);
+  border-radius: var(--r-xl); padding: 1.5rem; text-align: center;
+  box-shadow: var(--sh-card);
+}
+.ac-avatar-wrap { position: relative; display: inline-block; margin-bottom: 12px; }
+.ac-avatar {
+  width: 68px; height: 68px;
+  background: var(--navy);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--teal); font-size: 26px; margin: 0 auto;
+}
+.ac-online {
+  position: absolute; bottom: 2px; right: 2px;
+  width: 15px; height: 15px; background: var(--teal);
+  border-radius: 50%; border: 2.5px solid white;
+}
+.ac-name { font-size: 16px; font-weight: 700; color: var(--navy); }
+.ac-role { font-size: 13px; color: var(--muted); margin-bottom: 1rem; }
+.ac-tags { display: flex; flex-wrap: wrap; gap: 5px; justify-content: center; margin-bottom: 1rem; }
+.ac-tag { font-size: 11.5px; font-weight: 600; background: var(--navy); color: rgba(255,255,255,0.9); padding: 4px 10px; border-radius: 20px; }
+.ac-divider { height: 1px; background: var(--border); margin: 0.75rem 0; }
+.ac-mini-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.ac-mini-stat { background: var(--gray-50); border-radius: var(--r-md); padding: 9px; text-align: center; border: 1px solid var(--border-lt); }
+.ac-mini-num { font-size: 20px; font-weight: 700; }
+.ac-mini-lbl { font-size: 11px; color: var(--muted); margin-top: 2px; line-height: 1.3; }
+.ac-insight-panel {
+  background: white; border: 1px solid var(--border);
+  border-radius: var(--r-xl); padding: 1.25rem;
+  box-shadow: var(--sh-card);
+}
+.ac-panel-title { font-size: 12px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
+.ac-insight-row { display: flex; gap: 10px; align-items: flex-start; padding: 8px 0; border-bottom: 1px solid var(--border-lt); }
+.ac-insight-row:last-child { border-bottom: none; }
+.ac-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; margin-top: 5px; }
+.dot-red { background: var(--red); }
+.dot-amber { background: var(--amber); }
+.dot-teal { background: var(--teal); }
+.dot-blue { background: var(--cb-blue); }
+.ac-insight-text { font-size: 13px; color: var(--muted); line-height: 1.5; }
+.ac-insight-text strong { color: var(--text); }
+.ac-topics {
+  background: white; border: 1px solid var(--border);
+  border-radius: var(--r-xl); padding: 1.25rem;
+  box-shadow: var(--sh-card);
+}
+.ac-topic-btn {
+  display: flex; align-items: center; gap: 11px;
+  width: 100%; padding: 10px 12px; border-radius: var(--r-md);
+  border: 1px solid var(--border-lt); background: white; color: var(--text);
+  font-size: 13.5px; cursor: pointer; transition: all 0.12s;
+  margin-bottom: 7px; text-align: left; font-family: var(--font); font-weight: 500;
+}
+.ac-topic-btn:last-child { margin-bottom: 0; }
+.ac-topic-btn:hover { border-color: var(--navy); background: var(--navy); color: white; }
+.ac-topic-icon { font-size: 17px; width: 24px; text-align: center; flex-shrink: 0; }
+.ac-topic-arrow { margin-left: auto; font-size: 12px; color: var(--muted); }
+.ac-topic-btn:hover .ac-topic-arrow { color: rgba(255,255,255,0.6); }
+/* Chat area */
+.ac-chat {
+  background: white; border: 1px solid var(--border);
+  border-radius: var(--r-xl); box-shadow: var(--sh-card);
+  display: flex; flex-direction: column; height: 640px;
+}
+.chat-top {
+  padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 12px;
+  background: var(--navy); border-radius: var(--r-xl) var(--r-xl) 0 0;
+}
+.chat-top-icon {
+  width: 38px; height: 38px;
+  background: rgba(0,179,136,0.2);
+  border: 1.5px solid rgba(0,179,136,0.5);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--teal); font-size: 18px; flex-shrink: 0;
+}
+.chat-top-text h3 { font-size: 15px; font-weight: 700; color: white; }
+.chat-top-text p { font-size: 12px; color: rgba(255,255,255,0.6); }
+.chat-live {
+  margin-left: auto; display: flex; align-items: center; gap: 6px;
+  font-size: 12px; font-weight: 700; color: var(--teal);
+  background: rgba(0,179,136,0.15);
+  border: 1px solid rgba(0,179,136,0.3);
+  padding: 4px 11px; border-radius: 20px;
+}
+.live-dot {
+  width: 7px; height: 7px; background: var(--teal);
+  border-radius: 50%; animation: blink 2s infinite;
+}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+.chat-msgs {
+  flex: 1; overflow-y: auto; padding: 1.25rem 1.5rem;
+  display: flex; flex-direction: column; gap: 14px;
+}
+.chat-msg { display: flex; gap: 10px; align-items: flex-start; }
+.chat-msg.user { flex-direction: row-reverse; }
+.msg-avatar {
+  width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 700;
+}
+.msg-avatar.ai  { background: var(--navy); color: var(--teal); }
+.msg-avatar.me  { background: var(--cb-blue-lt); color: var(--cb-blue); }
+.msg-bubble { padding: 11px 15px; border-radius: 12px; font-size: 14px; line-height: 1.65; max-width: 82%; }
+.msg-bubble.ai  { background: var(--gray-50); border: 1px solid var(--border-lt); color: var(--text); border-bottom-left-radius: 4px; }
+.msg-bubble.me  { background: var(--navy); color: white; border-bottom-right-radius: 4px; }
+.inline-data {
+  background: white; border: 1px solid var(--border);
+  border-radius: var(--r-md); padding: 10px 14px; margin-top: 10px;
+}
+.inline-data-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin-bottom: 8px; }
+.inline-row { display: flex; justify-content: space-between; align-items: center; font-size: 13px; padding: 4px 0; border-bottom: 1px solid var(--border-lt); }
+.inline-row:last-child { border-bottom: none; }
+.inline-row span:first-child { color: var(--muted); }
+.inline-row span:last-child { font-weight: 700; }
+.survey-note {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 12px; font-weight: 600; color: var(--teal);
+  background: var(--teal-lt); padding: 4px 11px; border-radius: 20px;
+  margin-top: 8px;
+}
+.msg-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.msg-chip {
+  font-size: 12.5px; font-weight: 600; padding: 4px 12px;
+  border-radius: 20px; background: white; border: 1.5px solid var(--border);
+  color: var(--cb-blue); cursor: pointer; font-family: var(--font); transition: all 0.12s;
+}
+.msg-chip:hover { background: var(--cb-blue-lt); border-color: var(--cb-blue-md); }
+.typing-dots {
+  display: flex; align-items: center; gap: 5px;
+  padding: 11px 16px; background: var(--gray-50);
+  border: 1px solid var(--border-lt); border-radius: 12px;
+  border-bottom-left-radius: 4px; width: fit-content;
+}
+.typing-dots span {
+  width: 7px; height: 7px; background: var(--muted);
+  border-radius: 50%; animation: typebounce 1.2s infinite;
+}
+.typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+.typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes typebounce { 0%,80%,100%{transform:translateY(0)} 40%{transform:translateY(-7px)} }
+.chat-footer { padding: 1rem 1.25rem; border-top: 1px solid var(--border); }
+.chat-suggestions { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+.chat-sug {
+  font-size: 12.5px; font-weight: 600; padding: 5px 13px;
+  border: 1.5px solid var(--border); border-radius: 20px;
+  color: var(--navy); background: white;
+  cursor: pointer; transition: all 0.12s; font-family: var(--font);
+}
+.chat-sug:hover { background: var(--navy); color: white; border-color: var(--navy); }
+.chat-input-row { display: flex; gap: 8px; }
+.chat-input {
+  flex: 1; font-size: 14px; padding: 10px 16px;
+  border: 1.5px solid var(--border); border-radius: var(--r-md);
+  background: white; color: var(--text); font-family: var(--font); outline: none;
+}
+.chat-input:focus { border-color: var(--navy); box-shadow: 0 0 0 3px rgba(30,58,95,0.08); }
+.chat-send {
+  background: var(--navy); color: white; border: none;
+  width: 42px; height: 42px; border-radius: var(--r-md);
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; transition: opacity 0.15s;
+}
+.chat-send:hover { opacity: 0.85; }
+.chat-send svg { width: 16px; height: 16px; fill: white; }
+
+/* ── MODAL + TOAST ─────────────────────────────────────────── */
+.overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 500; align-items: center; justify-content: center; }
+.overlay.open { display: flex; }
+.modal {
+  background: white; border-radius: var(--r-2xl);
+  padding: 2rem; width: 100%; max-width: 440px; margin: 1rem;
+  box-shadow: var(--sh-lg);
+}
+.modal h3 { font-size: 20px; font-weight: 700; color: var(--navy); margin-bottom: 6px; }
+.modal > p { font-size: 14px; color: var(--muted); margin-bottom: 1.5rem; }
+.modal-url-row { display: flex; gap: 8px; margin-bottom: 1.25rem; }
+.modal-url-box { flex: 1; font-size: 13px; padding: 9px 12px; border: 1.5px solid var(--border); border-radius: var(--r-md); background: var(--gray-50); color: var(--muted); font-family: var(--font); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.modal-copy { background: var(--navy); color: white; border: none; padding: 9px 18px; border-radius: var(--r-md); font-size: 13.5px; font-weight: 700; cursor: pointer; white-space: nowrap; font-family: var(--font); }
+.modal-opts { display: flex; flex-direction: column; gap: 8px; margin-bottom: 1.5rem; }
+.modal-opt { display: flex; align-items: center; gap: 14px; padding: 13px 14px; border: 1.5px solid var(--border); border-radius: var(--r-lg); cursor: pointer; transition: all 0.12s; }
+.modal-opt:hover { border-color: var(--navy); background: var(--gray-50); }
+.modal-opt-icon { width: 38px; height: 38px; border-radius: 9px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.modal-opt h4 { font-size: 14.5px; font-weight: 700; color: var(--navy); }
+.modal-opt p { font-size: 12.5px; color: var(--muted); }
+.modal-dismiss { width: 100%; padding: 11px; border: 1.5px solid var(--border); border-radius: var(--r-md); background: transparent; color: var(--muted); font-size: 14px; font-weight: 600; cursor: pointer; font-family: var(--font); transition: background 0.12s; }
+.modal-dismiss:hover { background: var(--gray-100); }
+.toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%); background: var(--navy); color: white; padding: 11px 22px; border-radius: 20px; font-size: 14px; font-weight: 600; opacity: 0; transition: opacity 0.2s; pointer-events: none; z-index: 999; }
+.toast.show { opacity: 1; }
+
+/* ── RESPONSIVE ────────────────────────────────────────────── */
+@media(max-width:780px){
+  .nav-links { display: none; }
+  .college-grid { grid-template-columns: 1fr; }
+  .afford-grid { grid-template-columns: 1fr; }
+  .ac-layout { grid-template-columns: 1fr; }
+  .lc-grid { grid-template-columns: 1fr; }
+  .hero-proof { gap: 1rem; }
+  .proof-item { border-right: none; padding: 0 1rem; }
+  .page { padding: 1.5rem 1rem 4rem; }
+  .nav { padding: 0 1rem; }
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-logo" onclick="goScreen('landing')">
+    <div class="logo-mark"><svg viewBox="0 0 20 20"><path d="M10 2L16 5.5V11C16 14.5 10 18 10 18S4 14.5 4 11V5.5L10 2Z"/></svg></div>
+    <div class="logo-text">
+      <div class="brand">BigFuture <span>Pathfinder</span></div>
+      <div class="sub">College Planning · 2027 Preview</div>
+    </div>
+  </div>
+  <div class="nav-links">
+    <button class="nav-link" onclick="goScreen('onboard')">Onboarding</button>
+    <button class="nav-link" onclick="goScreen('dashboard')">My Plan</button>
+    <button class="nav-link" onclick="goScreen('compare')">Compare</button>
+    <button class="nav-link" onclick="goScreen('afford')">Affordability</button>
+    <button class="nav-link" onclick="goScreen('ai-counselor')">AI Counselor</button>
+  </div>
+  <div class="nav-right">
+    <button class="nav-share" onclick="openModal()">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="white"><path d="M11 1a2 2 0 1 1 0 4 2 2 0 0 1 0-4zM5 6a2 2 0 1 1 0 4 2 2 0 0 1 0-4zm6 5a2 2 0 1 1 0 4 2 2 0 0 1 0-4zM11 3a1 1 0 1 0 0 2 1 1 0 0 0 0-2zM5 8a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm6 5a1 1 0 1 0 0 2 1 1 0 0 0 0-2zM9.97 4.53l-3.94 2.3-.44-.76 3.94-2.3.44.76zm-3.94 4.64l3.94 2.3-.44.76-3.94-2.3.44-.76z"/></svg>
+      Share
+    </button>
+    <div class="nav-avatar">M</div>
+  </div>
+</nav>
+
+<!-- SHARE MODAL -->
+<div class="overlay" id="share-overlay" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <h3>Share this prototype</h3>
+    <p>Send this college planning demo to teammates, stakeholders, or students.</p>
+    <div class="modal-url-row">
+      <div class="modal-url-box" id="share-url-box">pathfinder-demo.html</div>
+      <button class="modal-copy" onclick="copyLink()">Copy link</button>
+    </div>
+    <div class="modal-opts">
+      <div class="modal-opt" onclick="dlFile()">
+        <div class="modal-opt-icon" style="background:var(--cb-blue-lt)">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="var(--cb-blue)" stroke-width="1.8"><path d="M10 3v10m0 0l-3.5-3.5M10 13l3.5-3.5M3.5 16.5h13"/></svg>
+        </div>
+        <div><h4>Download HTML file</h4><p>Works offline — just open in any browser</p></div>
+      </div>
+      <div class="modal-opt" onclick="toast('Opening email client…')">
+        <div class="modal-opt-icon" style="background:var(--amber-lt)">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="var(--amber)" stroke-width="1.8"><rect x="2" y="5" width="16" height="11" rx="2"/><path d="M2 7l8 5.5L18 7"/></svg>
+        </div>
+        <div><h4>Send via email</h4><p>Pre-filled message ready to send</p></div>
+      </div>
+      <div class="modal-opt" onclick="toast('Embed code copied!')">
+        <div class="modal-opt-icon" style="background:var(--purple-lt)">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="var(--purple)" stroke-width="1.8"><polyline points="7,5 3,10 7,15"/><polyline points="13,5 17,10 13,15"/></svg>
+        </div>
+        <div><h4>Embed in presentation</h4><p>iframe code for Notion or Slides</p></div>
+      </div>
+    </div>
+    <button class="modal-dismiss" onclick="closeModal()">Close</button>
+  </div>
+</div>
+<div class="toast" id="toast-el"></div>
+
+<!-- ═══════════════ LANDING ═══════════════ -->
+<div id="screen-landing" class="screen active">
+  <div class="hero">
+    <div class="hero-eyebrow">✦ 2027 Product Preview · College Board BigFuture</div>
+    <h1>Find colleges that actually <em>fit</em> you</h1>
+    <p>Pathfinder turns the chaos of college research into a clear, personalized plan — with fit scores, career data, real cost signals, and a weekly action checklist.</p>
+    <div class="hero-btns">
+      <button class="btn-hero-primary" onclick="goScreen('onboard')">Start your plan →</button>
+      <button class="btn-hero-ghost" onclick="goScreen('dashboard')">Skip to dashboard</button>
+    </div>
+    <div class="hero-proof">
+      <div class="proof-item"><div class="proof-num">4.2M</div><div class="proof-label">Students on BigFuture</div></div>
+      <div class="proof-item"><div class="proof-num">2,800+</div><div class="proof-label">Colleges indexed</div></div>
+      <div class="proof-item"><div class="proof-num">60%</div><div class="proof-label">Students: career outcomes are #1</div></div>
+      <div class="proof-item"><div class="proof-num">70%</div><div class="proof-label">Want academic + career fit</div></div>
+    </div>
+  </div>
+  <div class="landing-cards">
+    <div class="landing-cards-inner">
+      <div class="lc-header">
+        <h2>Everything in one place</h2>
+        <p>Pathfinder combines what students actually need — fit, cost, career, and action.</p>
+      </div>
+      <div class="lc-grid">
+        <div class="lc-card">
+          <div class="lc-icon">🎯</div>
+          <h3>Personalized fit scores</h3>
+          <p>Every school gets a match score broken down into academic fit, career alignment, affordability, location, and outcomes.</p>
+          <button class="lc-card-link" onclick="goScreen('dashboard')">See your matches →</button>
+        </div>
+        <div class="lc-card">
+          <div class="lc-icon">💰</div>
+          <h3>Affordability signals</h3>
+          <p>Estimated net cost, scholarship matches, and FAFSA guidance — connected to your actual college list.</p>
+          <button class="lc-card-link" onclick="goScreen('afford')">Explore costs →</button>
+        </div>
+        <div class="lc-card">
+          <div class="lc-icon">✦</div>
+          <h3>AI counselor</h3>
+          <p>Ask anything — career paths, list balance, essay tips, deadlines. Available 24/7 and grounded in your profile.</p>
+          <button class="lc-card-link" onclick="goScreen('ai-counselor')">Chat now →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ ONBOARDING ═══════════════ -->
+<div id="screen-onboard" class="screen">
+  <div class="ob-page">
+    <div class="ob-heading">
+      <h2>Let's build your college plan</h2>
+      <p>5 questions to personalize your school recommendations</p>
+    </div>
+    <div id="ob-start" style="text-align:center;padding:1rem 0 2rem">
+      <button class="btn-hero-primary" style="font-size:15px;padding:12px 28px" onclick="startOB()">Get started →</button>
+    </div>
+    <div id="ob-flow" style="display:none">
+      <div class="prog-meta"><span id="ob-step-lbl">Question 1 of 5</span><span id="ob-pct-lbl">20%</span></div>
+      <div class="prog-track"><div class="prog-fill" id="ob-bar" style="width:20%"></div></div>
+      <div id="ob-q"></div>
+      <div class="q-nav">
+        <button class="btn-skip" onclick="obSkip()">Skip this one</button>
+        <button class="btn-continue" onclick="obNext()">Continue →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ DASHBOARD ═══════════════ -->
+<div id="screen-dashboard" class="screen">
+  <div class="page">
+    <!-- Data callout -->
+    <div class="data-bar">
+      <div style="font-size:26px;flex-shrink:0">📊</div>
+      <div class="data-bar-copy">
+        <h3>Recommendations shaped by real student research</h3>
+        <p>Based on surveys of 192 students: 60% prioritize career outcomes, 54% cite program strength, 70% say academic + career fit defines a "good fit" school.</p>
+      </div>
+      <div class="data-bar-stats">
+        <div class="db-stat"><div class="db-num">60%</div><div class="db-label">Career outcomes<br>#1 factor</div></div>
+        <div class="db-stat"><div class="db-num">54%</div><div class="db-label">Program strength<br>#2 factor</div></div>
+        <div class="db-stat"><div class="db-num">45%</div><div class="db-label">Cost & aid<br>#3 factor</div></div>
+      </div>
+    </div>
+    <!-- Header -->
+    <div class="dash-head">
+      <div class="dh-left">
+        <h2>Your college plan, Maya 👋</h2>
+        <p>Biology / Health · Within 4 hours · Affordability: Very important</p>
+      </div>
+      <div class="dh-stats">
+        <div class="dh-stat"><div class="num" id="stat-saved">0</div><div class="lbl">Saved</div></div>
+        <div class="dh-sep"></div>
+        <div class="dh-stat"><div class="num" id="stat-tasks">2/6</div><div class="lbl">Tasks done</div></div>
+        <div class="dh-sep"></div>
+        <div class="dh-stat"><div class="num">$14k</div><div class="lbl">Aid matched</div></div>
+      </div>
+    </div>
+    <!-- Grids -->
+    <div class="section-label"><h3>Strong academic + career fit</h3><span class="count-badge">2 schools</span></div>
+    <div class="college-grid" id="grid-strong"></div>
+    <div class="section-label"><h3>Affordable options</h3><span class="count-badge">3 schools</span></div>
+    <div class="college-grid" id="grid-afford"></div>
+    <div class="section-label"><h3>Reach — worth considering</h3><span class="count-badge">2 schools</span></div>
+    <div class="college-grid" id="grid-reach"></div>
+    <!-- Guide -->
+    <div class="guide-card">
+      <div class="guide-head">
+        <div class="guide-icon">✦</div>
+        <div class="guide-head-text"><h3>Pathfinder Guide</h3><p>Your personal planning assistant</p></div>
+      </div>
+      <div class="guide-msgs" id="g-msgs">
+        <div class="gm bot">Your list is strong on academics and career alignment — great start! It's a bit reach-heavy right now. I'd suggest adding 1–2 target schools with better affordability. Want me to find options that match your biology interest?</div>
+      </div>
+      <div class="guide-chips">
+        <button class="guide-chip" onclick="guideAsk('How do I balance my list?')">Balance my list?</button>
+        <button class="guide-chip" onclick="guideAsk('Which school is most affordable?')">Most affordable?</button>
+        <button class="guide-chip" onclick="guideAsk('Best career outcomes?')">Best career outcomes?</button>
+        <button class="guide-chip" onclick="guideAsk('What should I do this week?')">This week?</button>
+      </div>
+      <div class="guide-row">
+        <input class="guide-input" id="g-input" placeholder="Ask anything about your college plan…" onkeydown="if(event.key==='Enter')guideSend()">
+        <button class="guide-send" onclick="guideSend()">Send</button>
+      </div>
+    </div>
+    <!-- Checklist -->
+    <div class="checklist-card">
+      <div class="cl-header"><h3>This week's plan</h3><span class="cl-progress-label" id="cl-lbl">2 of 6 done</span></div>
+      <div class="cl-sub">Small actions, real progress — check things off as you go.</div>
+      <div class="cl-track"><div class="cl-fill" id="cl-fill" style="width:33%"></div></div>
+      <div id="cl-items"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ COMPARE ═══════════════ -->
+<div id="screen-compare" class="screen">
+  <div class="page">
+    <div style="margin-bottom:1.5rem">
+      <h2 style="font-size:24px;font-weight:700;color:var(--navy);margin-bottom:6px">Compare schools</h2>
+      <p style="color:var(--muted);font-size:15px">Select up to 4 schools to compare side by side. Career data, cost, and placement rates included.</p>
+    </div>
+    <div class="compare-pills" id="cpills"></div>
+    <div class="compare-wrap" id="compare-wrap"></div>
+  </div>
+</div>
+
+<!-- ═══════════════ AFFORDABILITY ═══════════════ -->
+<div id="screen-afford" class="screen">
+  <div class="page">
+    <div style="margin-bottom:1.5rem">
+      <h2 style="font-size:24px;font-weight:700;color:var(--navy);margin-bottom:6px">Affordability & Scholarships</h2>
+      <p style="color:var(--muted);font-size:15px">Cost signals, financial aid steps, and matched scholarships for your plan.</p>
+    </div>
+    <div class="section-label"><h3>Cost signals</h3></div>
+    <div class="afford-grid" id="afford-grid"></div>
+    <div class="section-label"><h3>Matched scholarships</h3><span class="count-badge">4 matches</span></div>
+    <div class="sch-card" id="sch-list"></div>
+  </div>
+</div>
+
+<!-- ═══════════════ AI COUNSELOR ═══════════════ -->
+<div id="screen-ai-counselor" class="screen">
+  <div class="page">
+    <div style="margin-bottom:1.5rem">
+      <h2 style="font-size:24px;font-weight:700;color:var(--navy);margin-bottom:6px">AI Counselor</h2>
+      <p style="color:var(--muted);font-size:15px">Your personal college advisor — available 24/7, grounded in your profile and real student research data.</p>
+    </div>
+    <div class="ac-layout">
+      <div class="ac-sidebar">
+        <div class="ac-profile">
+          <div class="ac-avatar-wrap">
+            <div class="ac-avatar">✦</div>
+            <div class="ac-online"></div>
+          </div>
+          <div class="ac-name">Pathfinder AI</div>
+          <div class="ac-role">College Planning Advisor</div>
+          <div class="ac-tags">
+            <span class="ac-tag">Career Guidance</span>
+            <span class="ac-tag">Financial Aid</span>
+            <span class="ac-tag">List Building</span>
+            <span class="ac-tag">Essay Tips</span>
+          </div>
+          <div class="ac-divider"></div>
+          <div class="ac-mini-stats">
+            <div class="ac-mini-stat"><div class="ac-mini-num" style="color:var(--cb-blue)">7</div><div class="ac-mini-lbl">Schools reviewed</div></div>
+            <div class="ac-mini-stat"><div class="ac-mini-num" style="color:var(--teal)">4</div><div class="ac-mini-lbl">Scholarships found</div></div>
+            <div class="ac-mini-stat"><div class="ac-mini-num" style="color:var(--amber)">2</div><div class="ac-mini-lbl">Urgent deadlines</div></div>
+            <div class="ac-mini-stat"><div class="ac-mini-num" style="color:var(--purple)">3</div><div class="ac-mini-lbl">Action items</div></div>
+          </div>
+        </div>
+        <div class="ac-insight-panel">
+          <div class="ac-panel-title">Plan insights</div>
+          <div class="ac-insight-row"><div class="ac-dot dot-red"></div><div class="ac-insight-text"><strong>List is reach-heavy.</strong> 2 of 7 schools are strong matches for your current profile.</div></div>
+          <div class="ac-insight-row"><div class="ac-dot dot-amber"></div><div class="ac-insight-text"><strong>Cost concern on 3 schools.</strong> UC Davis needs a scholarship plan to be viable.</div></div>
+          <div class="ac-insight-row"><div class="ac-dot dot-teal"></div><div class="ac-insight-text"><strong>Strong career alignment.</strong> 5 schools have active biology / pre-med pipelines.</div></div>
+          <div class="ac-insight-row"><div class="ac-dot dot-blue"></div><div class="ac-insight-text"><strong>Deadline alert.</strong> UO Biological Sciences Scholarship closes Feb 15.</div></div>
+        </div>
+        <div class="ac-topics">
+          <div class="ac-panel-title">Explore topics</div>
+          <button class="ac-topic-btn" onclick="acAsk('What careers can I pursue with a biology degree?')"><span class="ac-topic-icon">🎯</span><span>Career paths for biology</span><span class="ac-topic-arrow">→</span></button>
+          <button class="ac-topic-btn" onclick="acAsk('How do I build a balanced college list?')"><span class="ac-topic-icon">⚖️</span><span>Building a balanced list</span><span class="ac-topic-arrow">→</span></button>
+          <button class="ac-topic-btn" onclick="acAsk('Walk me through the FAFSA process')"><span class="ac-topic-icon">💰</span><span>FAFSA & financial aid</span><span class="ac-topic-arrow">→</span></button>
+          <button class="ac-topic-btn" onclick="acAsk('What makes University of Oregon a good fit for me?')"><span class="ac-topic-icon">🏫</span><span>Why UO fits your profile</span><span class="ac-topic-arrow">→</span></button>
+          <button class="ac-topic-btn" onclick="acAsk('How do I write a strong personal statement?')"><span class="ac-topic-icon">✍️</span><span>Personal statement tips</span><span class="ac-topic-arrow">→</span></button>
+          <button class="ac-topic-btn" onclick="acAsk('What should I do in the next 30 days?')"><span class="ac-topic-icon">📅</span><span>30-day action plan</span><span class="ac-topic-arrow">→</span></button>
+        </div>
+      </div>
+      <div class="ac-chat">
+        <div class="chat-top">
+          <div class="chat-top-icon">✦</div>
+          <div class="chat-top-text">
+            <h3>Pathfinder AI Counselor</h3>
+            <p>Personalized to Maya · Biology / Health · Grade 11</p>
+          </div>
+          <div class="chat-live"><div class="live-dot"></div>Live</div>
+        </div>
+        <div class="chat-msgs" id="ac-msgs">
+          <div class="chat-msg">
+            <div class="msg-avatar ai">✦</div>
+            <div class="msg-bubble ai">
+              Hi Maya! I've reviewed your list and profile. Here's where things stand:
+              <div class="inline-data">
+                <div class="inline-data-title">Your plan at a glance</div>
+                <div class="inline-row"><span>List balance</span><span style="color:var(--amber)">Needs work ⚠️</span></div>
+                <div class="inline-row"><span>Career alignment</span><span style="color:var(--teal)">Strong ✓</span></div>
+                <div class="inline-row"><span>Affordability coverage</span><span style="color:var(--amber)">Partial ⚠️</span></div>
+                <div class="inline-row"><span>Scholarship pipeline</span><span style="color:var(--cb-blue)">In progress</span></div>
+              </div>
+              Your biggest gap is list balance — strong reaches but you need more solid targets. What would you like to tackle first?
+              <div class="msg-chips">
+                <button class="msg-chip" onclick="acAsk('Help me fix my list balance')">Fix list balance</button>
+                <button class="msg-chip" onclick="acAsk('Tell me about my career opportunities')">My career options</button>
+                <button class="msg-chip" onclick="acAsk('What are my most urgent deadlines?')">Urgent deadlines</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="chat-footer">
+          <div class="chat-suggestions">
+            <button class="chat-sug" onclick="acAsk('What careers can I pursue with a biology degree?')">🎯 Career paths</button>
+            <button class="chat-sug" onclick="acAsk('Which school has the best internship opportunities?')">💼 Internships</button>
+            <button class="chat-sug" onclick="acAsk('How do I improve my chances at UC Davis?')">📈 Improve odds</button>
+            <button class="chat-sug" onclick="acAsk('What are my most urgent deadlines?')">⏰ Deadlines</button>
+          </div>
+          <div class="chat-input-row">
+            <input class="chat-input" id="ac-input" placeholder="Ask your AI counselor anything…" onkeydown="if(event.key==='Enter')acSend()">
+            <button class="chat-send" onclick="acSend()"><svg viewBox="0 0 16 16"><path d="M2 8l12-6-4 6 4 6z"/></svg></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══════ DATA ═══════
+const COLLEGES = [
+  {id:1,name:"University of Oregon",loc:"Eugene, OR",score:88,major:"Biology / Pre-Med",afford:"good",cat:"strong",tag:"target",explain:"Strong biology program with pre-med advising and a 92% graduation rate. Within your 4-hour range and offers need-based aid that aligns with your budget priorities.",cost:"$18,400",action:"add",careers:["Physician","Research Scientist","Public Health Specialist"],placement:89,salary:"$58k",interns:"150+",gradRate:92},
+  {id:2,name:"Cal Poly SLO",loc:"San Luis Obispo, CA",score:82,major:"Health Sciences",afford:"good",cat:"strong",tag:"target",explain:"Renowned 'learn by doing' model with one of the strongest health sciences placement rates in the West. Merit aid available in your academic range.",cost:"$16,200",action:"add",careers:["Physical Therapist","Health Admin","Biotech Researcher"],placement:91,salary:"$62k",interns:"200+",gradRate:88},
+  {id:3,name:"Portland State University",loc:"Portland, OR",score:79,major:"Biology",afford:"good",cat:"afford",tag:"safety",explain:"Urban campus with direct access to Portland's biotech sector. Generous merit scholarships and a growing pre-health pipeline — your strongest financial safety.",cost:"$12,800",action:"add",careers:["Biotech Technician","Environmental Scientist","Pre-Med"],placement:84,salary:"$52k",interns:"120+",gradRate:82},
+  {id:4,name:"Oregon State University",loc:"Corvallis, OR",score:77,major:"Pre-Med / Biology",afford:"warn",cat:"afford",tag:"target",explain:"Strong pre-med pathway with dedicated health professions advising. Net cost may run above your target range — the OSU Promise scholarship could close that gap.",cost:"$21,100",action:"aid",careers:["Physician","Pharmacist","Veterinarian"],placement:87,salary:"$60k",interns:"180+",gradRate:86},
+  {id:5,name:"Western Oregon University",loc:"Monmouth, OR",score:72,major:"Health Sciences",afford:"good",cat:"afford",tag:"safety",explain:"Small campus with a close-knit health sciences community. Most affordable on your list and a reliable financial safety with strong student support.",cost:"$11,400",action:"add",careers:["Health Educator","Public Health Coordinator","Clinical Tech"],placement:80,salary:"$48k",interns:"60+",gradRate:79},
+  {id:6,name:"UC Davis",loc:"Davis, CA",score:85,major:"Biology / Biochemistry",afford:"bad",cat:"reach",tag:"reach",explain:"Top-5 biology program nationally with a direct pipeline into UC Davis Medical Center. Out-of-state costs are substantial — only worth pursuing with a solid scholarship strategy.",cost:"$38,900",action:"remove",careers:["Physician","Biochemist","Medical Researcher"],placement:93,salary:"$72k",interns:"400+",gradRate:94},
+  {id:7,name:"University of Washington",loc:"Seattle, WA",score:80,major:"Biology / Neuroscience",afford:"warn",cat:"reach",tag:"reach",explain:"Exceptional research university with a top-ranked biology program on the West Coast. Reach due to selectivity, but your profile makes it a reasonable application.",cost:"$28,500",action:"ask",careers:["Neuroscientist","Medical Researcher","Biotech Engineer"],placement:90,salary:"$68k",interns:"300+",gradRate:91}
+];
+const SCHOLARSHIPS = [
+  {name:"Oregon Opportunity Grant",org:"Oregon Student Assistance Commission",amt:"Up to $2,000/yr",dl:"March 1, 2025",saved:false},
+  {name:"Biological Sciences Scholarship",org:"University of Oregon",amt:"$5,000/yr",dl:"Feb 15, 2025",saved:true},
+  {name:"Health Careers Scholarship",org:"Oregon Health & Science Univ.",amt:"$3,500/yr",dl:"April 30, 2025",saved:false},
+  {name:"First-Generation Student Award",org:"Cal Poly SLO",amt:"$4,000/yr",dl:"Jan 31, 2025",saved:false}
+];
+const CHECKLIST = ["Save three schools to your balanced list","Compare two affordable options side by side","Review the Biological Sciences Scholarship — deadline Feb 15","Ask your counselor about your reach schools","Update your major or career preference","Complete one financial aid planning step"];
+const CL_DONE = [true,true,false,false,false,false];
+const OB_QS = [
+  {step:"Step 1 — Interests",q:"What area are you most interested in studying?",hint:"Select one — this shapes your entire college recommendation list",opts:[{icon:"🧬",label:"Biology / Health",career:"Pre-Med, Nursing, Public Health"},{icon:"💻",label:"Engineering / CS",career:"Software Eng, Data Science, AI"},{icon:"📊",label:"Business / Economics",career:"Finance, Marketing, Consulting"},{icon:"🎨",label:"Arts / Humanities",career:"Design, Education, Law, Media"},{icon:"🔬",label:"Natural Sciences",career:"Chemistry, Physics, Research"},{icon:"❓",label:"Undecided",career:"We'll help you explore options"}]},
+  {step:"Step 2 — Location",q:"How far from home are you willing to go?",hint:"Filters schools to ones that feel geographically right for you",opts:[{icon:"🏠",label:"Within 2 hours",career:""},{icon:"🚗",label:"Within 4 hours",career:""},{icon:"🗺️",label:"Anywhere in-state",career:""},{icon:"✈️",label:"Open to anywhere",career:""}]},
+  {step:"Step 3 — Campus feel",q:"What kind of campus feels right for you?",hint:"Survey data: 43% of students weight campus environment highly when choosing",opts:[{icon:"🏘️",label:"Small (under 5k)",career:"Close-knit community"},{icon:"🏫",label:"Medium (5k–15k)",career:"Balanced experience"},{icon:"🏙️",label:"Large (15k+)",career:"More resources & clubs"},{icon:"🤷",label:"No preference",career:"Show me all options"}]},
+  {step:"Step 4 — Affordability",q:"How important is keeping costs low?",hint:"45% of students rank cost & financial aid as a top 3 factor when applying",opts:[{icon:"💰",label:"Very important",career:"Filter to best value schools"},{icon:"🏦",label:"Important",career:"Balance cost with fit"},{icon:"📈",label:"Somewhat important",career:"Cost is one factor"},{icon:"🎯",label:"Less of a concern",career:"Prioritize fit over price"}]},
+  {step:"Step 5 — Career clarity",q:"How clear are you on your career direction?",hint:"60% of students say career outcomes are their #1 factor in choosing a school",opts:[{icon:"🎯",label:"Very clear",career:""},{icon:"🔍",label:"General direction",career:""},{icon:"💡",label:"Still exploring",career:""},{icon:"🌱",label:"Just starting out",career:""}]}
+];
+const GUIDE_ANSWERS = {
+  "How do I balance my list?":"Your list is reach-heavy — UC Davis and UW are both very competitive. Add Portland State and Western Oregon as clear safeties. A healthy list: ~2 safeties, 3 targets, and 2 reaches. You're close — just need one more target.",
+  "Which school is most affordable?":"Western Oregon University has the lowest estimated cost at $11,400/yr, followed by Portland State at $12,800. Both have strong need-based aid programs you haven't fully explored yet.",
+  "Best career outcomes?":"For biology and pre-med, UC Davis leads with 93% career placement and connections to UC Davis Medical Center. UO and Cal Poly are both strong at 89–91% with active internship pipelines across the Pacific Northwest.",
+  "What should I do this week?":"Top 3 priorities: (1) Apply for the UO Biological Sciences Scholarship — it closes Feb 15. (2) Compare Cal Poly and Portland State on affordability. (3) Ask your counselor whether UW is realistic given your current profile."
+};
+const AC_ANSWERS = {
+  "What careers can I pursue with a biology degree?":"With a biology degree and your health focus, your career options are wide:\n\n🏥 Healthcare & Medicine — Pre-med track to MD/DO, PA, or Nursing. High earning potential ($70k–$250k+).\n\n🔬 Biotech & Research — Lab roles at firms like Genentech, OHSU, or academic institutions. Growing fast in Oregon/Washington.\n\n🌿 Public Health — Epidemiology, health policy, community health. Increasingly in demand.\n\n💊 Pharmaceutical — Drug development, clinical trials. Strong pipelines at Cal Poly and UC Davis.\n\nAll 7 schools on your list have strong biology-to-career pipelines. Want me to dig into a specific path?",
+  "Help me fix my list balance":"Your current breakdown: 2 reaches (UC Davis, UW), 3 targets (UO, Cal Poly, OSU), 2 safeties (PSU, WOU). That's actually well-structured!\n\nThe real issue is affordability coverage — UC Davis at $38,900/yr creates financial risk if other applications don't pan out. My recommendation: build a scholarship plan for UC Davis before finalizing it as an application.",
+  "Tell me about my career opportunities":"For biology/health careers, here's what the data shows across your schools:\n\n• University of Oregon → 89% placement, strong OHSU ties, avg $58k start\n• Cal Poly SLO → 91% placement, 'learn by doing,' biotech corridor to Bay Area\n• UC Davis → 93% placement, UC Medical Center pipeline, best outcomes but highest cost\n\nSurvey data: 58% of students say career outcomes are their #1 factor when choosing between colleges. Want to compare internship access across your list?",
+  "What makes University of Oregon a good fit for me?":"University of Oregon scores 88/100 on your personalized fit. Here's why:\n\n• Biology / Pre-Med program: 95/100\n• Affordability: 88/100 — $18,400/yr estimated\n• Career placement: 89% with strong OHSU connections\n• Distance from home: Within 4 hours ✓\n• Graduation rate: 92%\n\nKey opportunity: The Biological Sciences Scholarship ($5k/yr) could make this your most affordable strong-fit school — but it closes Feb 15. Have you started that application yet?",
+  "Walk me through the FAFSA process":"The FAFSA is your gateway to federal grants, loans, and work-study — often worth thousands.\n\n1. Create your FSA ID at studentaid.gov — you and a parent both need one.\n2. Gather documents — family's 2023 tax returns, SSNs, bank info.\n3. Complete the FAFSA — takes ~30–45 minutes. 2025–26 opened Dec 1.\n4. Review your SAR — you'll get a Student Aid Report showing your Expected Family Contribution.\n5. Compare aid letters — each school sends one after admission. Compare net cost, not sticker price.\n\nOregon schools use March 1 as their priority FAFSA deadline. Missing it means less aid. Want me to add this to your action plan?",
+  "How do I write a strong personal statement?":"Your personal statement is where you control the narrative. Here's what works:\n\nStart with a specific moment — not 'I've always loved science' but the exact moment biology clicked for you. A lab experiment, a family health scare, a volunteer shift.\n\nConnect it to your future — show how your past connects to what you'll do at their school and beyond.\n\nBe specific, not impressive — a student who identified native plants in their backyard is more compelling than one who lists 12 clubs.\n\nYour angle: Given your biology / pre-med interest, a strong theme might be: the intersection of personal experience and scientific curiosity. Want me to help you brainstorm opening lines?",
+  "What should I do in the next 30 days?":"Here's your 30-day roadmap:\n\n🔴 Week 1 — Urgent: Apply for UO Biological Sciences Scholarship (Feb 15 deadline)\n🟡 Week 2 — Important: Complete your FAFSA if you haven't. Finalize whether UC Davis is realistic without significant aid.\n🟢 Week 3 — Progress: Start your personal statement — even just 3 bullet points about your biology origin story.\n🔵 Week 4 — Review: Schedule a meeting with your school counselor to review your list.\n\nYou're in a strong position — just need to close those scholarship gaps. What would you like to tackle first?",
+  "Which school has the best internship opportunities?":"For biology and health careers:\n\n• UC Davis — 400+ partners including pharma companies, UC Medical Centers, Sacramento biotech\n• University of Washington — 300+ partners, Seattle's biotech scene (Fred Hutch, Allen Institute)\n• Cal Poly SLO — 200+ partners, 'learn by doing' model, strong CA biotech connections\n• University of Oregon — 150+ partners, strong OHSU connection, regional healthcare\n\nSurvey data: 21% of students say internship opportunities are a key deciding factor. For your location preference + affordability needs, UO or Cal Poly give you the best internship-to-cost ratio.",
+  "How do I improve my chances at UC Davis?":"UC Davis is a reach, but you can strengthen your application:\n\n• Academic profile — UC Davis biology admits typically have 3.8+ GPA and 1350+ SAT\n• Research experience — even one semester of independent lab work signals genuine interest\n• Personal statement — connect a specific biology-health experience to UC Davis's research mission\n• Letters of rec — a science teacher who can speak to your curiosity matters most\n• Apply Early Action — UC Davis has non-binding EA; early applicants tend to see better outcomes\n• Cost path — Blue and Gold Opportunity Plan covers tuition for families earning under $80k/yr\n\nWhat's your current GPA range? I can give more targeted advice.",
+  "What are my most urgent deadlines?":"Here's what needs your attention now:\n\n🔴 Feb 15 — UO Biological Sciences Scholarship (11 days away)\n🔴 Jan 31 — Cal Poly First-Gen Award (check if extension available)\n🟡 March 1 — Oregon Opportunity Grant / Priority FAFSA\n🟡 April 30 — OHSU Health Careers Scholarship\n\nMost urgent: Apply for the UO Biological Sciences Scholarship this week. It's worth $5,000/yr and you match the criteria. Want me to walk you through the application?"
+};
+
+// ═══════ STATE ═══════
+let savedSet = new Set();
+let compareSet = new Set([1,2,3]);
+let obStep = 0;
+let obAnswers = {};
+
+// ═══════ NAV ═══════
+function goScreen(name) {
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-link').forEach(b=>b.classList.remove('active'));
+  document.getElementById('screen-'+name).classList.add('active');
+  const map={landing:null,onboard:0,dashboard:1,compare:2,afford:3,'ai-counselor':4};
+  const btns=document.querySelectorAll('.nav-link');
+  if(map[name]!=null) btns[map[name]].classList.add('active');
+  if(name==='dashboard') renderDash();
+  if(name==='compare')   renderCompare();
+  if(name==='afford')    renderAfford();
+}
+
+// ═══════ RING ═══════
+function ring(score){
+  const r=18,c=2*Math.PI*r,off=c*(1-score/100);
+  const col=score>=85?'#00b388':score>=75?'#0077c8':'#d97706';
+  return `<div class="ring-wrap"><svg width="46" height="46" viewBox="0 0 46 46"><circle cx="23" cy="23" r="${r}" fill="none" stroke="#e5e7eb" stroke-width="4"/><circle cx="23" cy="23" r="${r}" fill="none" stroke="${col}" stroke-width="4" stroke-dasharray="${c.toFixed(1)}" stroke-dashoffset="${off.toFixed(1)}" stroke-linecap="round"/></svg><div class="ring-num">${score}</div></div>`;
+}
+
+// ═══════ COLLEGE CARD ═══════
+function card(c){
+  const tCls=c.tag==='reach'?'t-reach':c.tag==='safety'?'t-safety':'t-target';
+  const aCls=c.afford==='good'?'t-aff-g':c.afford==='warn'?'t-aff-w':'t-aff-b';
+  const aLbl=c.afford==='good'?'Likely affordable':c.afford==='warn'?'Cost concern':'Needs support';
+  const sv=savedSet.has(c.id);
+  return `<div class="cc${sv?' saved':''}" id="cc-${c.id}">
+    <div class="cc-top">
+      <div><div class="cc-name">${c.name}</div><div class="cc-loc">${c.loc}</div></div>
+      ${ring(c.score)}
+    </div>
+    <div class="tags">
+      <span class="tag ${tCls}">${c.tag.charAt(0).toUpperCase()+c.tag.slice(1)}</span>
+      <span class="tag t-major">${c.major}</span>
+      <span class="tag ${aCls}">${aLbl}</span>
+    </div>
+    <div class="cc-text">${c.explain}</div>
+    <div class="career-box">
+      <div class="career-box-title">Career paths from this school</div>
+      <div class="career-pills">${c.careers.map(x=>`<span class="career-pill">${x}</span>`).join('')}</div>
+      <div class="outcomes-row">
+        <span class="out-item"><strong>${c.placement}%</strong> placement</span>
+        <span class="out-item">·</span>
+        <span class="out-item"><strong>${c.salary}</strong> median start</span>
+        <span class="out-item">·</span>
+        <span class="out-item"><strong>${c.interns}</strong> internship partners</span>
+      </div>
+    </div>
+    <div class="cc-acts">
+      <button class="cc-btn ${sv?'saved':'save'}" onclick="toggleSave(${c.id})">${sv?'✓ Saved':'+ Save'}</button>
+      <button class="cc-btn" onclick="toCompare(${c.id})">Compare</button>
+      <button class="cc-btn" onclick="goScreen('afford')">Costs →</button>
+    </div>
+  </div>`;
+}
+function toggleSave(id){
+  savedSet.has(id)?savedSet.delete(id):savedSet.add(id);
+  document.getElementById('stat-saved').textContent=savedSet.size;
+  const el=document.getElementById('cc-'+id);
+  if(el) el.outerHTML=card(COLLEGES.find(c=>c.id===id));
+}
+function toCompare(id){ compareSet.add(id); goScreen('compare'); }
+
+// ═══════ DASHBOARD ═══════
+function renderDash(){
+  ['strong','afford','reach'].forEach(cat=>{
+    const el=document.getElementById('grid-'+cat);
+    if(el) el.innerHTML=COLLEGES.filter(c=>c.cat===cat).map(card).join('');
+  });
+  renderCL();
+}
+function renderCL(){
+  const done=CL_DONE.filter(Boolean).length;
+  const pct=Math.round(done/CL_DONE.length*100);
+  const fill=document.getElementById('cl-fill'),lbl=document.getElementById('cl-lbl'),items=document.getElementById('cl-items'),st=document.getElementById('stat-tasks');
+  if(fill) fill.style.width=pct+'%';
+  if(lbl) lbl.textContent=done+' of '+CL_DONE.length+' done';
+  if(st) st.textContent=done+'/'+CL_DONE.length;
+  if(items) items.innerHTML=CHECKLIST.map((t,i)=>`<div class="cl-item" onclick="toggleCL(${i})"><div class="cl-box${CL_DONE[i]?' done':''}"><svg class="cl-checkmark" width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="white" stroke-width="2"><polyline points="2,7 5.5,10 11,3"/></svg></div><span class="cl-text${CL_DONE[i]?' done':''}">${t}</span></div>`).join('');
+}
+function toggleCL(i){ CL_DONE[i]=!CL_DONE[i]; renderCL(); }
+
+// ═══════ GUIDE ═══════
+function guideAsk(q){
+  const el=document.getElementById('g-msgs');
+  if(!el) return;
+  el.innerHTML+=`<div class="gm usr">${q}</div>`;
+  el.scrollTop=el.scrollHeight;
+  const ans=GUIDE_ANSWERS[q]||"Based on your profile, focus on affordability signals first, then make sure you have a balanced mix of reach, target, and safety schools.";
+  setTimeout(()=>{ el.innerHTML+=`<div class="gm bot">${ans}</div>`; el.scrollTop=el.scrollHeight; }, 500);
+}
+function guideSend(){ const el=document.getElementById('g-input'); if(!el||!el.value.trim()) return; guideAsk(el.value.trim()); el.value=''; }
+
+// ═══════ COMPARE ═══════
+function renderCompare(){
+  const pills=document.getElementById('cpills'),wrap=document.getElementById('compare-wrap');
+  if(!pills||!wrap) return;
+  pills.innerHTML=COLLEGES.map(c=>`<button class="cpill${compareSet.has(c.id)?' sel':''}" onclick="toggleCP(${c.id})">${c.name}</button>`).join('');
+  const sel=COLLEGES.filter(c=>compareSet.has(c.id)).slice(0,4);
+  if(!sel.length){ wrap.innerHTML='<div style="padding:2.5rem;text-align:center;color:var(--muted);font-size:15px">Select schools above to compare.</div>'; return; }
+  const rows=[
+    {lbl:"Overall fit",fn:c=>`<div class="sbar-wrap"><div class="sbar-track"><div class="sbar-fill" style="width:${c.score}%"></div></div><strong>${c.score}</strong><span style="font-size:12px;color:var(--muted)">/100</span></div>`},
+    {lbl:"Est. annual cost",fn:c=>`<strong style="font-size:16px">${c.cost}</strong><span style="font-size:12px;color:var(--muted)"> /yr</span>`},
+    {lbl:"Career placement",fn:c=>`<strong style="color:${c.placement>=90?'var(--teal)':'var(--cb-blue)'}">${c.placement}%</strong>`},
+    {lbl:"Median starting salary",fn:c=>`<strong>${c.salary}</strong>`},
+    {lbl:"Internship partners",fn:c=>c.interns},
+    {lbl:"Graduation rate",fn:c=>`<strong>${c.gradRate}%</strong>`},
+    {lbl:"Top careers",fn:c=>`<div style="display:flex;flex-wrap:wrap;gap:3px">${c.careers.slice(0,2).map(x=>`<span class="tag t-major" style="font-size:11px">${x}</span>`).join('')}</div>`},
+    {lbl:"Application type",fn:c=>{const m={reach:'t-reach',target:'t-target',safety:'t-safety'};return `<span class="tag ${m[c.tag]}">${c.tag.charAt(0).toUpperCase()+c.tag.slice(1)}</span>`}},
+    {lbl:"Affordability",fn:c=>{const m={good:['t-aff-g','Likely affordable'],warn:['t-aff-w','Cost concern'],bad:['t-aff-b','Needs support']};const[cl,lb]=m[c.afford];return `<span class="tag ${cl}">${lb}</span>`}},
+    {lbl:"Recommended action",fn:c=>{const m={add:['ap-add','Add to list'],aid:['ap-aid','Research aid'],ask:['ap-ask','Ask counselor'],remove:['ap-remove','Review priority']};const[cl,lb]=m[c.action];return `<span class="act-pill ${cl}">${lb}</span>`}},
+  ];
+  wrap.innerHTML=`<table><thead><tr><th>Category</th>${sel.map(c=>`<th>${c.name}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr><td>${r.lbl}</td>${sel.map(c=>`<td>${r.fn(c)}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
+}
+function toggleCP(id){ compareSet.has(id)?compareSet.delete(id):(compareSet.size<4&&compareSet.add(id)); renderCompare(); }
+
+// ═══════ AFFORDABILITY ═══════
+function renderAfford(){
+  const ag=document.getElementById('afford-grid'),sl=document.getElementById('sch-list');
+  if(!ag||!sl) return;
+  ag.innerHTML=COLLEGES.slice(0,4).map(c=>{
+    const dc=c.afford==='good'?'sig-g':c.afford==='warn'?'sig-w':'sig-b';
+    const tc=c.afford==='good'?'slt-g':c.afford==='warn'?'slt-w':'slt-b';
+    const lbl=c.afford==='good'?'Likely affordable':c.afford==='warn'?'Worth exploring':'Needs scholarship support';
+    const steps=c.afford==='good'?['Review FAFSA deadline','Check merit aid options']:c.afford==='warn'?['Explore institutional grants','Research external scholarships']:['Apply for need-based aid now','Find external scholarships'];
+    return `<div class="afford-card"><div class="aff-sig"><div class="sig-dot ${dc}"></div><span class="sig-label ${tc}">${lbl}</span></div><div class="aff-name">${c.name}</div><div class="aff-cost">${c.cost}</div><div class="aff-cost-sub">estimated net cost per year</div><div class="aff-steps">${steps.map(s=>`<div class="aff-step"><span class="aff-arrow">→</span>${s}</div>`).join('')}</div></div>`;
+  }).join('');
+  sl.innerHTML=SCHOLARSHIPS.map((s,i)=>`<div class="sch-item"><div class="sch-row1"><div><div class="sch-name">${s.name}</div><div class="sch-org">${s.org}</div></div><div class="sch-amt">${s.amt}</div></div><div class="sch-dl">Deadline: <strong>${s.dl}</strong></div><div class="sch-acts"><button class="sch-btn${s.saved?' saved':''}" onclick="toggleSch(${i})">${s.saved?'✓ Saved':'Save scholarship'}</button><button class="sch-btn">View details</button></div></div>`).join('');
+}
+function toggleSch(i){ SCHOLARSHIPS[i].saved=!SCHOLARSHIPS[i].saved; renderAfford(); }
+
+// ═══════ AI COUNSELOR ═══════
+function acAsk(q){
+  const el=document.getElementById('ac-msgs');
+  if(!el) return;
+  el.innerHTML+=`<div class="chat-msg user"><div class="msg-avatar me">M</div><div class="msg-bubble me">${q}</div></div>`;
+  const tid='t'+Date.now();
+  el.innerHTML+=`<div class="chat-msg" id="${tid}"><div class="msg-avatar ai">✦</div><div class="typing-dots"><span></span><span></span><span></span></div></div>`;
+  el.scrollTop=el.scrollHeight;
+  const delay=800+Math.random()*500;
+  setTimeout(()=>{
+    const te=document.getElementById(tid);
+    if(te) te.remove();
+    const raw=AC_ANSWERS[q]||`That's a great question. Based on your biology/health focus and Oregon-region preference, University of Oregon and Cal Poly SLO both have strong programs that align with your goals. Want me to dig into specifics?`;
+    const ans=raw.replace(/\n/g,'<br>').replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>');
+    el.innerHTML+=`<div class="chat-msg"><div class="msg-avatar ai">✦</div><div class="msg-bubble ai">${ans}</div></div>`;
+    el.scrollTop=el.scrollHeight;
+  },delay);
+}
+function acSend(){ const el=document.getElementById('ac-input'); if(!el||!el.value.trim()) return; acAsk(el.value.trim()); el.value=''; }
+
+// ═══════ ONBOARDING ═══════
+function startOB(){
+  document.getElementById('ob-start').style.display='none';
+  document.getElementById('ob-flow').style.display='block';
+  obStep=0; renderOBQ();
+}
+function renderOBQ(){
+  const q=OB_QS[obStep];
+  const pct=Math.round((obStep+1)/OB_QS.length*100);
+  document.getElementById('ob-step-lbl').textContent=`Question ${obStep+1} of ${OB_QS.length}`;
+  document.getElementById('ob-pct-lbl').textContent=pct+'%';
+  document.getElementById('ob-bar').style.width=pct+'%';
+  document.getElementById('ob-q').innerHTML=`<div class="q-card"><div class="q-step">${q.step}</div><div class="q-question">${q.q}</div><div class="q-hint">${q.hint}</div><div class="q-opts" id="ob-opts">${q.opts.map((o,i)=>`<button class="q-opt" onclick="obSel(this,${i})" data-i="${i}"><div class="q-radio"></div><span class="q-icon">${o.icon}</span><div class="q-label-wrap"><div class="q-label">${o.label}</div>${o.career?`<div class="q-career">${o.career}</div>`:''}</div></button>`).join('')}</div></div>`;
+  if(obAnswers[obStep]!=null){ const opts=document.querySelectorAll('.q-opt'); if(opts[obAnswers[obStep]]) opts[obAnswers[obStep]].classList.add('sel'); }
+}
+function obSel(el,i){ document.querySelectorAll('.q-opt').forEach(e=>e.classList.remove('sel')); el.classList.add('sel'); obAnswers[obStep]=i; }
+function obNext(){ obStep<OB_QS.length-1?(obStep++,renderOBQ()):goScreen('dashboard'); }
+function obSkip(){ obNext(); }
+
+// ═══════ SHARE / MODAL ═══════
+function openModal(){ document.getElementById('share-overlay').classList.add('open'); document.getElementById('share-url-box').textContent=window.location.href||'pathfinder-demo.html'; }
+function closeModal(){ document.getElementById('share-overlay').classList.remove('open'); }
+function copyLink(){ navigator.clipboard.writeText(window.location.href||'pathfinder-demo.html').catch(()=>{}); toast('Link copied to clipboard!'); }
+function dlFile(){ const b=new Blob([document.documentElement.outerHTML],{type:'text/html'}); const a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download='pathfinder-demo.html'; a.click(); closeModal(); toast('Downloading…'); }
+function toast(msg){ const el=document.getElementById('toast-el'); el.textContent=msg; el.classList.add('show'); setTimeout(()=>el.classList.remove('show'),2800); }
+
+// ═══════ INIT ═══════
+renderDash();
+renderAfford();
+</script>
+</body>
+</html>
