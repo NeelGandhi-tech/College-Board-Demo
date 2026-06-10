@@ -177,6 +177,13 @@ body::after {
 .screen { position: relative; z-index: 1; }
 .screen.active { display: block; }
 .page { max-width: 1380px; margin: 0 auto; padding: 3rem 2rem 5.5rem; }
+.page.page-compare,
+.page.page-fit,
+.page.page-system { max-width: 1540px; }
+.page.page-fit .summary-layout,
+.page.page-compare .compare-controls {
+  align-items: stretch;
+}
 
 /* ── LANDING ──────────────────────────────────────────────── */
 .hero {
@@ -1130,6 +1137,7 @@ body::after {
   border: 1px solid rgba(209,213,219,0.75); overflow: auto;
   box-shadow: var(--sh-card);
   backdrop-filter: blur(8px);
+  min-height: 720px;
 }
 .compare-wrap table { width: 100%; border-collapse: collapse; min-width: 540px; }
 .compare-wrap th {
@@ -1202,9 +1210,10 @@ body::after {
 .sch-btn.saved { background: rgba(47,111,237,0.08); color: var(--cb-blue); border-color: rgba(47,111,237,0.16); }
 
 /* ── AI COUNSELOR ──────────────────────────────────────────── */
-.ac-layout { display: grid; grid-template-columns: minmax(260px, 320px) minmax(0, 1fr); gap: 18px; align-items: start; }
+.page.page-ai { max-width: 1540px; }
+.ac-layout { display: grid; grid-template-columns: minmax(280px, 340px) minmax(0, 1fr); gap: 18px; align-items: stretch; }
 /* sidebar */
-.ac-sidebar { display: flex; flex-direction: column; gap: 14px; }
+.ac-sidebar { display: flex; flex-direction: column; gap: 14px; position: sticky; top: 88px; align-self: start; }
 .ac-profile {
   background: rgba(255,255,255,0.94); border: 1px solid rgba(209,213,219,0.75);
   border-radius: var(--r-2xl); padding: 1.5rem; text-align: center;
@@ -1271,7 +1280,7 @@ body::after {
 .ac-chat {
   background: rgba(255,255,255,0.94); border: 1px solid rgba(209,213,219,0.75);
   border-radius: var(--r-2xl); box-shadow: var(--sh-card);
-  display: flex; flex-direction: column; height: 640px;
+  display: flex; flex-direction: column; min-height: 760px; height: auto;
   backdrop-filter: blur(8px);
 }
 .chat-top {
@@ -1306,6 +1315,36 @@ body::after {
   display: flex; flex-direction: column; gap: 14px;
   background:
     linear-gradient(180deg, rgba(255,255,255,0.35), rgba(255,255,255,0.1));
+}
+.ai-card-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+.ai-slim-card {
+  background: white;
+  border: 1px solid var(--border-lt);
+  border-radius: var(--r-xl);
+  padding: 0.95rem 1rem;
+}
+.ai-slim-card .kicker {
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--cb-blue);
+  margin-bottom: 6px;
+}
+.ai-slim-card .title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 4px;
+}
+.ai-slim-card .copy {
+  font-size: 12.5px;
+  color: var(--muted);
+  line-height: 1.45;
 }
 .chat-msg { display: flex; gap: 10px; align-items: flex-start; }
 .chat-msg.user { flex-direction: row-reverse; }
@@ -1659,6 +1698,7 @@ body::after {
   border-radius: var(--r-xl);
   padding: 1rem;
   background: rgba(255,255,255,0.92);
+  min-height: 150px;
 }
 .breakdown-head {
   display: flex;
@@ -1696,6 +1736,38 @@ body::after {
   background: var(--gray-50);
   color: var(--gray-700);
 }
+.fit-mini-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 16px;
+}
+.fit-mini {
+  border: 1px solid var(--border-lt);
+  background: white;
+  border-radius: var(--r-xl);
+  padding: 0.95rem 1rem;
+  text-align: left;
+}
+.fit-mini .kicker {
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--cb-blue);
+  margin-bottom: 6px;
+}
+.fit-mini .title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 4px;
+}
+.fit-mini .copy {
+  font-size: 12.5px;
+  color: var(--muted);
+  line-height: 1.45;
+}
 .tradeoff-card {
   padding: 1.25rem 1.35rem;
   border-radius: var(--r-2xl);
@@ -1716,15 +1788,18 @@ body::after {
 }
 .compare-controls {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 16px;
-  align-items: start;
+  grid-template-columns: minmax(360px, 420px) minmax(0, 1fr);
+  gap: 18px;
+  align-items: stretch;
 }
 .weight-slider {
   padding: 1rem 1.1rem;
   border: 1px solid var(--border-lt);
   border-radius: var(--r-xl);
   background: rgba(255,255,255,0.9);
+  min-height: 720px;
+  display: flex;
+  flex-direction: column;
 }
 .weight-row {
   display: grid;
@@ -1741,6 +1816,29 @@ body::after {
 .weight-row input[type="range"] {
   width: 100%;
   accent-color: var(--cb-blue);
+}
+.weight-notes {
+  margin-top: auto;
+  display: grid;
+  gap: 10px;
+  padding-top: 14px;
+}
+.weight-note {
+  border: 1px solid var(--border-lt);
+  background: var(--gray-50);
+  border-radius: var(--r-lg);
+  padding: 0.9rem 1rem;
+}
+.weight-note strong {
+  display: block;
+  font-size: 13px;
+  color: var(--navy);
+  margin-bottom: 4px;
+}
+.weight-note span {
+  font-size: 12.5px;
+  color: var(--muted);
+  line-height: 1.45;
 }
 .compare-grid {
   display: grid;
@@ -1845,14 +1943,15 @@ body::after {
 }
 .system-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 14px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
 }
 .system-card {
   background: rgba(255,255,255,0.9);
   border: 1px solid var(--border-lt);
   border-radius: var(--r-2xl);
   padding: 1rem;
+  min-height: 220px;
 }
 .system-card h4 {
   font-size: 15px;
@@ -2041,7 +2140,7 @@ body::after {
 <div class="toast" id="toast-el"></div>
 <!-- ═══════════════ DESIGN SYSTEM ═══════════════ -->
 <div id="screen-system" class="screen active">
-  <div class="page">
+  <div class="page page-system">
     <div class="panel tradeoff-card" style="margin-bottom:1.25rem">
       <div class="panel-kicker">Design system</div>
       <div class="panel-title">A College Board-inspired visual language for BigFuture Pathfinder.</div>
