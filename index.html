@@ -453,6 +453,24 @@ body {
 .q-label-wrap { flex: 1; }
 .q-label { font-weight: 600; }
 .q-career { font-size: 12px; color: var(--muted); font-weight: 400; margin-top: 2px; }
+.q-input-wrap { display: flex; flex-direction: column; gap: 8px; }
+.q-text-input {
+  width: 100%;
+  font-size: 15px;
+  padding: 13px 14px;
+  border: 2px solid var(--border);
+  border-radius: var(--r-lg);
+  background: white;
+  color: var(--text);
+  font-family: var(--font);
+  outline: none;
+  transition: all 0.12s;
+}
+.q-text-input:focus {
+  border-color: var(--cb-blue);
+  box-shadow: 0 0 0 3px rgba(0,119,200,0.1);
+}
+.q-input-note { font-size: 12.5px; color: var(--muted); line-height: 1.4; }
 .q-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 1rem; }
 .btn-skip {
   font-size: 14px; color: var(--muted); cursor: pointer;
@@ -873,14 +891,14 @@ body {
   <div class="ob-page">
     <div class="ob-heading">
       <h2>Let's build your college plan</h2>
-      <p>5 questions to personalize your school recommendations</p>
+      <p>6 questions to personalize your school recommendations</p>
     </div>
     <div id="ob-start" style="text-align:center;padding:1rem 0 2rem">
       <button class="btn-hero-primary" style="font-size:15px;padding:12px 28px" onclick="startOB()">Get started →</button>
     </div>
     <div id="ob-flow" style="display:none">
-      <div class="prog-meta"><span id="ob-step-lbl">Question 1 of 5</span><span id="ob-pct-lbl">20%</span></div>
-      <div class="prog-track"><div class="prog-fill" id="ob-bar" style="width:20%"></div></div>
+      <div class="prog-meta"><span id="ob-step-lbl">Question 1 of 6</span><span id="ob-pct-lbl">17%</span></div>
+      <div class="prog-track"><div class="prog-fill" id="ob-bar" style="width:17%"></div></div>
       <div id="ob-q"></div>
       <div class="q-nav">
         <button class="btn-skip" onclick="obSkip()">Skip this one</button>
@@ -1098,10 +1116,11 @@ const CHECKLIST = ["Save three schools to your balanced list","Compare two affor
 const CL_DONE = [true,true,false,false,false,false];
 const OB_QS = [
   {step:"Step 1 — Interests",q:"What area are you most interested in studying?",hint:"Select one — this shapes your entire college recommendation list",opts:[{icon:"🧬",label:"Biology / Health",career:"Pre-Med, Nursing, Public Health"},{icon:"💻",label:"Engineering / CS",career:"Software Eng, Data Science, AI"},{icon:"📊",label:"Business / Economics",career:"Finance, Marketing, Consulting"},{icon:"🎨",label:"Arts / Humanities",career:"Design, Education, Law, Media"},{icon:"🔬",label:"Natural Sciences",career:"Chemistry, Physics, Research"},{icon:"❓",label:"Undecided",career:"We'll help you explore options"}]},
-  {step:"Step 2 — Location",q:"How far from home are you willing to go?",hint:"Filters schools to ones that feel geographically right for you",opts:[{icon:"🏠",label:"Within 2 hours",career:""},{icon:"🚗",label:"Within 4 hours",career:""},{icon:"🗺️",label:"Anywhere in-state",career:""},{icon:"✈️",label:"Open to anywhere",career:""}]},
-  {step:"Step 3 — Campus feel",q:"What kind of campus feels right for you?",hint:"Survey data: 43% of students weight campus environment highly when choosing",opts:[{icon:"🏘️",label:"Small (under 5k)",career:"Close-knit community"},{icon:"🏫",label:"Medium (5k–15k)",career:"Balanced experience"},{icon:"🏙️",label:"Large (15k+)",career:"More resources & clubs"},{icon:"🤷",label:"No preference",career:"Show me all options"}]},
-  {step:"Step 4 — Affordability",q:"How important is keeping costs low?",hint:"45% of students rank cost & financial aid as a top 3 factor when applying",opts:[{icon:"💰",label:"Very important",career:"Filter to best value schools"},{icon:"🏦",label:"Important",career:"Balance cost with fit"},{icon:"📈",label:"Somewhat important",career:"Cost is one factor"},{icon:"🎯",label:"Less of a concern",career:"Prioritize fit over price"}]},
-  {step:"Step 5 — Career clarity",q:"How clear are you on your career direction?",hint:"60% of students say career outcomes are their #1 factor in choosing a school",opts:[{icon:"🎯",label:"Very clear",career:""},{icon:"🔍",label:"General direction",career:""},{icon:"💡",label:"Still exploring",career:""},{icon:"🌱",label:"Just starting out",career:""}]}
+  {step:"Step 2 — Location",q:"Where are you located?",hint:"Enter a ZIP code or state first so we can personalize distance and in-state recommendations",type:"input",placeholder:"ZIP code or state"},
+  {step:"Step 3 — Distance",q:"How far from home are you willing to go?",hint:"Now that we know your location, this filters schools to the right travel range",opts:[{icon:"🏠",label:"Within 2 hours",career:""},{icon:"🚗",label:"Within 4 hours",career:""},{icon:"🗺️",label:"Anywhere in-state",career:""},{icon:"✈️",label:"Open to anywhere",career:""}]},
+  {step:"Step 4 — Campus feel",q:"What kind of campus feels right for you?",hint:"Survey data: 43% of students weight campus environment highly when choosing",opts:[{icon:"🏘️",label:"Small (under 5k)",career:"Close-knit community"},{icon:"🏫",label:"Medium (5k–15k)",career:"Balanced experience"},{icon:"🏙️",label:"Large (15k+)",career:"More resources & clubs"},{icon:"🤷",label:"No preference",career:"Show me all options"}]},
+  {step:"Step 5 — Affordability",q:"How important is keeping costs low?",hint:"45% of students rank cost & financial aid as a top 3 factor when applying",opts:[{icon:"💰",label:"Very important",career:"Filter to best value schools"},{icon:"🏦",label:"Important",career:"Balance cost with fit"},{icon:"📈",label:"Somewhat important",career:"Cost is one factor"},{icon:"🎯",label:"Less of a concern",career:"Prioritize fit over price"}]},
+  {step:"Step 6 — Career clarity",q:"How clear are you on your career direction?",hint:"60% of students say career outcomes are their #1 factor in choosing a school",opts:[{icon:"🎯",label:"Very clear",career:""},{icon:"🔍",label:"General direction",career:""},{icon:"💡",label:"Still exploring",career:""},{icon:"🌱",label:"Just starting out",career:""}]}
 ];
 const GUIDE_ANSWERS = {
   "How do I balance my list?":"Your list is reach-heavy — UC Davis and UW are both very competitive. Add Portland State and Western Oregon as clear safeties. A healthy list: ~2 safeties, 3 targets, and 2 reaches. You're close — just need one more target.",
@@ -1291,11 +1310,25 @@ function renderOBQ(){
   document.getElementById('ob-step-lbl').textContent=`Question ${obStep+1} of ${OB_QS.length}`;
   document.getElementById('ob-pct-lbl').textContent=pct+'%';
   document.getElementById('ob-bar').style.width=pct+'%';
+  if(q.type==='input'){
+    const current=typeof obAnswers[obStep]==='string' ? obAnswers[obStep] : '';
+    document.getElementById('ob-q').innerHTML=`<div class="q-card"><div class="q-step">${q.step}</div><div class="q-question">${q.q}</div><div class="q-hint">${q.hint}</div><div class="q-input-wrap"><input class="q-text-input" id="ob-location-input" type="text" placeholder="${q.placeholder}" oninput="obAnswers[obStep]=this.value" onkeydown="if(event.key==='Enter')obNext()"><div class="q-input-note">This helps the app suggest schools and distance ranges that make sense for you.</div></div></div>`;
+    const input=document.getElementById('ob-location-input');
+    if(input){ input.value=current; input.focus(); }
+    return;
+  }
   document.getElementById('ob-q').innerHTML=`<div class="q-card"><div class="q-step">${q.step}</div><div class="q-question">${q.q}</div><div class="q-hint">${q.hint}</div><div class="q-opts" id="ob-opts">${q.opts.map((o,i)=>`<button class="q-opt" onclick="obSel(this,${i})" data-i="${i}"><div class="q-radio"></div><span class="q-icon">${o.icon}</span><div class="q-label-wrap"><div class="q-label">${o.label}</div>${o.career?`<div class="q-career">${o.career}</div>`:''}</div></button>`).join('')}</div></div>`;
   if(obAnswers[obStep]!=null){ const opts=document.querySelectorAll('.q-opt'); if(opts[obAnswers[obStep]]) opts[obAnswers[obStep]].classList.add('sel'); }
 }
 function obSel(el,i){ document.querySelectorAll('.q-opt').forEach(e=>e.classList.remove('sel')); el.classList.add('sel'); obAnswers[obStep]=i; }
-function obNext(){ obStep<OB_QS.length-1?(obStep++,renderOBQ()):goScreen('dashboard'); }
+function obNext(){
+  const q=OB_QS[obStep];
+  if(q.type==='input'){
+    const input=document.getElementById('ob-location-input');
+    obAnswers[obStep]=input ? input.value.trim() : '';
+  }
+  obStep<OB_QS.length-1?(obStep++,renderOBQ()):goScreen('dashboard');
+}
 function obSkip(){ obNext(); }
 
 // ═══════ SHARE / MODAL ═══════
