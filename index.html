@@ -1386,6 +1386,22 @@ body::after {
   gap: 20px;
   align-items: stretch;
 }
+.dashboard-shell {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(320px, 0.75fr);
+  gap: 20px;
+  align-items: start;
+}
+.dashboard-main {
+  min-width: 0;
+  display: grid;
+  gap: 18px;
+}
+.dashboard-side {
+  min-width: 0;
+  position: sticky;
+  top: 92px;
+}
 .panel {
   background: rgba(255,255,255,0.88);
   border: 1px solid rgba(209,213,219,0.75);
@@ -1928,6 +1944,8 @@ body::after {
   .ac-layout { grid-template-columns: 1fr; }
   .lc-grid { grid-template-columns: 1fr; }
   .page { padding: 1.25rem 1rem 4rem; }
+  .dashboard-shell { grid-template-columns: 1fr; }
+  .dashboard-side { position: static; }
   .match-hero { flex-direction: column; }
   .match-shell { grid-template-columns: 1fr; }
   .match-filters { position: static; }
@@ -2096,151 +2114,157 @@ body::after {
 <!-- ═══════════════ DASHBOARD ═══════════════ -->
 <div id="screen-dashboard" class="screen">
   <div class="page">
-    <div class="product-hero">
-      <section class="panel hero-summary">
-        <div class="panel-kicker">Home dashboard</div>
-        <div class="panel-title">Good evening, Maya. Your college plan is 42% complete.</div>
-        <div class="panel-subtitle">BigFuture Pathfinder is keeping track of fit, cost, admissions odds, and what you still need to do next.</div>
-        <div class="progress-cluster">
-          <div class="progress-card">
-            <div class="progress-label">Saved schools</div>
-            <div class="progress-value" id="stat-saved">4</div>
-            <div class="progress-note">Strong balance so far</div>
-          </div>
-          <div class="progress-card">
-            <div class="progress-label">List balance</div>
-            <div class="progress-value">2-3-2</div>
-            <div class="progress-note">Reach / target / likely</div>
-          </div>
-          <div class="progress-card">
-            <div class="progress-label">Upcoming deadlines</div>
-            <div class="progress-value">3</div>
-            <div class="progress-note">Highest priority this week</div>
-          </div>
-          <div class="progress-card">
-            <div class="progress-label">Scholarship matches</div>
-            <div class="progress-value">4</div>
-            <div class="progress-note">$14k in aid matched</div>
-          </div>
+    <div class="dashboard-shell">
+      <div class="dashboard-main">
+        <div class="product-hero">
+          <section class="panel hero-summary">
+            <div class="panel-kicker">Home dashboard</div>
+            <div class="panel-title">Good evening, Maya. Your college plan is 42% complete.</div>
+            <div class="panel-subtitle">BigFuture Pathfinder is keeping track of fit, cost, admissions odds, and what you still need to do next.</div>
+            <div class="progress-cluster">
+              <div class="progress-card">
+                <div class="progress-label">Saved schools</div>
+                <div class="progress-value" id="stat-saved">4</div>
+                <div class="progress-note">Strong balance so far</div>
+              </div>
+              <div class="progress-card">
+                <div class="progress-label">List balance</div>
+                <div class="progress-value">2-3-2</div>
+                <div class="progress-note">Reach / target / likely</div>
+              </div>
+              <div class="progress-card">
+                <div class="progress-label">Upcoming deadlines</div>
+                <div class="progress-value">3</div>
+                <div class="progress-note">Highest priority this week</div>
+              </div>
+              <div class="progress-card">
+                <div class="progress-label">Scholarship matches</div>
+                <div class="progress-value">4</div>
+                <div class="progress-note">$14k in aid matched</div>
+              </div>
+            </div>
+          </section>
+          <section class="panel panel-soft" style="padding:1.5rem">
+            <div class="panel-header">
+              <div>
+                <div class="panel-kicker">Your profile</div>
+                <div class="panel-title">College fit score: 84/100</div>
+                <div class="panel-subtitle">Biology / Health · Within 4 hours · Affordability matters a lot</div>
+              </div>
+            </div>
+            <div class="score-wheel">
+              <div class="score-wheel-label">
+                <div class="score-wheel-num">84</div>
+                <div class="score-wheel-text">fit score</div>
+              </div>
+            </div>
+            <div class="glance-copy" style="margin-top:14px">Your strongest advantage is academic and career alignment. The biggest risk is affordability on reach schools.</div>
+          </section>
         </div>
-      </section>
-      <section class="panel panel-soft" style="padding:1.5rem">
-        <div class="panel-header">
+        <div class="section-heading">
           <div>
-            <div class="panel-kicker">Your profile</div>
-            <div class="panel-title">College fit score: 84/100</div>
-            <div class="panel-subtitle">Biology / Health · Within 4 hours · Affordability matters a lot</div>
+            <h3>Your Plan at a Glance</h3>
+            <p>What is working, what needs attention, and what to do next.</p>
           </div>
         </div>
-        <div class="score-wheel">
-          <div class="score-wheel-label">
-            <div class="score-wheel-num">84</div>
-            <div class="score-wheel-text">fit score</div>
+        <div class="glance-grid">
+          <div class="glance-card good">
+            <div class="glance-top"><div class="glance-title">What is going well</div><div class="glance-score">A</div></div>
+            <div class="glance-copy">Strong biology / health alignment and a healthy mix of campuses with clear career outcomes.</div>
+          </div>
+          <div class="glance-card warn">
+            <div class="glance-top"><div class="glance-title">Needs attention</div><div class="glance-score">2</div></div>
+            <div class="glance-copy">A couple of schools need scholarship planning before they should feel safe to keep.</div>
+          </div>
+          <div class="glance-card risk">
+            <div class="glance-top"><div class="glance-title">Affordability risk</div><div class="glance-score">High</div></div>
+            <div class="glance-copy">UC Davis and UW are exciting, but they need a cost strategy so they do not dominate the list emotionally.</div>
+            <div class="meter"><span style="width:78%"></span></div>
+          </div>
+          <div class="glance-card good">
+            <div class="glance-top"><div class="glance-title">Saved schools</div><div class="glance-score">4</div></div>
+            <div class="glance-copy">UO, OSU, PSU, and WOU are giving you a stable foundation.</div>
+          </div>
+          <div class="glance-card warn">
+            <div class="glance-top"><div class="glance-title">Scholarship matches</div><div class="glance-score">$14k</div></div>
+            <div class="glance-copy">You already have aid matches. Now the goal is to turn them into actual applications.</div>
+          </div>
+          <div class="glance-card good">
+            <div class="glance-top"><div class="glance-title">Recommended next step</div><div class="glance-score">1</div></div>
+            <div class="glance-copy">Finish the UO scholarship application first. It has the clearest return for your current list.</div>
           </div>
         </div>
-        <div class="glance-copy" style="margin-top:14px">Your strongest advantage is academic and career alignment. The biggest risk is affordability on reach schools.</div>
-      </section>
-    </div>
-    <div class="section-heading">
-      <div>
-        <h3>Your Plan at a Glance</h3>
-        <p>What is working, what needs attention, and what to do next.</p>
-      </div>
-    </div>
-    <div class="glance-grid">
-      <div class="glance-card good">
-        <div class="glance-top"><div class="glance-title">What is going well</div><div class="glance-score">A</div></div>
-        <div class="glance-copy">Strong biology / health alignment and a healthy mix of campuses with clear career outcomes.</div>
-      </div>
-      <div class="glance-card warn">
-        <div class="glance-top"><div class="glance-title">Needs attention</div><div class="glance-score">2</div></div>
-        <div class="glance-copy">A couple of schools need scholarship planning before they should feel safe to keep.</div>
-      </div>
-      <div class="glance-card risk">
-        <div class="glance-top"><div class="glance-title">Affordability risk</div><div class="glance-score">High</div></div>
-        <div class="glance-copy">UC Davis and UW are exciting, but they need a cost strategy so they do not dominate the list emotionally.</div>
-        <div class="meter"><span style="width:78%"></span></div>
-      </div>
-      <div class="glance-card good">
-        <div class="glance-top"><div class="glance-title">Saved schools</div><div class="glance-score">4</div></div>
-        <div class="glance-copy">UO, OSU, PSU, and WOU are giving you a stable foundation.</div>
-      </div>
-      <div class="glance-card warn">
-        <div class="glance-top"><div class="glance-title">Scholarship matches</div><div class="glance-score">$14k</div></div>
-        <div class="glance-copy">You already have aid matches. Now the goal is to turn them into actual applications.</div>
-      </div>
-      <div class="glance-card good">
-        <div class="glance-top"><div class="glance-title">Recommended next step</div><div class="glance-score">1</div></div>
-        <div class="glance-copy">Finish the UO scholarship application first. It has the clearest return for your current list.</div>
-      </div>
-    </div>
-    <div class="section-heading">
-      <div>
-        <h3>Saved Schools</h3>
-        <p>Schools already in your working list.</p>
-      </div>
-      <p>Tap a school to compare or inspect fit details.</p>
-    </div>
-    <div class="college-grid" id="grid-saved"></div>
-    <div class="section-heading">
-      <div>
-        <h3>Weekly Checklist</h3>
-        <p>Small actions that reduce anxiety and keep momentum going.</p>
-      </div>
-      <p>1 hour total this week</p>
-    </div>
-    <div class="action-strip">
-      <div class="action-card">
-        <div class="action-priority p-high"></div>
-        <div class="action-meta">
-          <div class="action-topline"><span class="priority-badge">High</span><span class="time-pill">15 min</span></div>
-          <div class="action-title">Apply for the UO scholarship</div>
-          <div class="action-reason">It closes soon and has the clearest payoff for your current list.</div>
+        <div class="section-heading">
+          <div>
+            <h3>Saved Schools</h3>
+            <p>Schools already in your working list.</p>
+          </div>
+          <p>Tap a school to compare or inspect fit details.</p>
+        </div>
+        <div class="college-grid" id="grid-saved"></div>
+        <div class="section-heading">
+          <div>
+            <h3>Weekly Checklist</h3>
+            <p>Small actions that reduce anxiety and keep momentum going.</p>
+          </div>
+          <p>1 hour total this week</p>
+        </div>
+        <div class="action-strip">
+          <div class="action-card">
+            <div class="action-priority p-high"></div>
+            <div class="action-meta">
+              <div class="action-topline"><span class="priority-badge">High</span><span class="time-pill">15 min</span></div>
+              <div class="action-title">Apply for the UO scholarship</div>
+              <div class="action-reason">It closes soon and has the clearest payoff for your current list.</div>
+            </div>
+          </div>
+          <div class="action-card">
+            <div class="action-priority p-high"></div>
+            <div class="action-meta">
+              <div class="action-topline"><span class="priority-badge">High</span><span class="time-pill">20 min</span></div>
+              <div class="action-title">Review your reach schools</div>
+              <div class="action-reason">Check whether UC Davis and UW stay realistic once cost is added.</div>
+            </div>
+          </div>
+          <div class="action-card">
+            <div class="action-priority p-med"></div>
+            <div class="action-meta">
+              <div class="action-topline"><span class="priority-badge">Medium</span><span class="time-pill">10 min</span></div>
+              <div class="action-title">Compare two affordable options</div>
+              <div class="action-reason">This helps keep your list emotionally balanced and financially safer.</div>
+            </div>
+          </div>
+          <div class="action-card">
+            <div class="action-priority p-low"></div>
+            <div class="action-meta">
+              <div class="action-topline"><span class="priority-badge">Low</span><span class="time-pill">15 min</span></div>
+              <div class="action-title">Talk to your counselor</div>
+              <div class="action-reason">A quick check-in can unlock the next decision with less stress.</div>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="action-card">
-        <div class="action-priority p-high"></div>
-        <div class="action-meta">
-          <div class="action-topline"><span class="priority-badge">High</span><span class="time-pill">20 min</span></div>
-          <div class="action-title">Review your reach schools</div>
-          <div class="action-reason">Check whether UC Davis and UW stay realistic once cost is added.</div>
+      <aside class="dashboard-side">
+        <div class="guide-card">
+          <div class="guide-head">
+            <div class="guide-icon">PF</div>
+            <div class="guide-head-text"><h3>Pathfinder Guide</h3><p>Your personal planning assistant</p></div>
+          </div>
+          <div class="guide-msgs" id="g-msgs">
+            <div class="gm bot">You are in a strong place academically. The main thing to solve now is how to keep the list balanced without losing the schools you are excited about.</div>
+          </div>
+          <div class="guide-chips">
+            <button class="guide-chip" onclick="guideAsk('How do I balance my list?')">Balance my list?</button>
+            <button class="guide-chip" onclick="guideAsk('Which school is most affordable?')">Most affordable?</button>
+            <button class="guide-chip" onclick="guideAsk('Best career outcomes?')">Best career outcomes?</button>
+            <button class="guide-chip" onclick="guideAsk('What should I do this week?')">This week?</button>
+          </div>
+          <div class="guide-row">
+            <input class="guide-input" id="g-input" placeholder="Ask anything about your college plan…" onkeydown="if(event.key==='Enter')guideSend()">
+            <button class="guide-send" onclick="guideSend()">Send</button>
+          </div>
         </div>
-      </div>
-      <div class="action-card">
-        <div class="action-priority p-med"></div>
-        <div class="action-meta">
-          <div class="action-topline"><span class="priority-badge">Medium</span><span class="time-pill">10 min</span></div>
-          <div class="action-title">Compare two affordable options</div>
-          <div class="action-reason">This helps keep your list emotionally balanced and financially safer.</div>
-        </div>
-      </div>
-      <div class="action-card">
-        <div class="action-priority p-low"></div>
-        <div class="action-meta">
-          <div class="action-topline"><span class="priority-badge">Low</span><span class="time-pill">15 min</span></div>
-          <div class="action-title">Talk to your counselor</div>
-          <div class="action-reason">A quick check-in can unlock the next decision with less stress.</div>
-        </div>
-      </div>
-    </div>
-    <div class="guide-card">
-      <div class="guide-head">
-        <div class="guide-icon">PF</div>
-        <div class="guide-head-text"><h3>Pathfinder Guide</h3><p>Your personal planning assistant</p></div>
-      </div>
-      <div class="guide-msgs" id="g-msgs">
-        <div class="gm bot">You are in a strong place academically. The main thing to solve now is how to keep the list balanced without losing the schools you are excited about.</div>
-      </div>
-      <div class="guide-chips">
-        <button class="guide-chip" onclick="guideAsk('How do I balance my list?')">Balance my list?</button>
-        <button class="guide-chip" onclick="guideAsk('Which school is most affordable?')">Most affordable?</button>
-        <button class="guide-chip" onclick="guideAsk('Best career outcomes?')">Best career outcomes?</button>
-        <button class="guide-chip" onclick="guideAsk('What should I do this week?')">This week?</button>
-      </div>
-      <div class="guide-row">
-        <input class="guide-input" id="g-input" placeholder="Ask anything about your college plan…" onkeydown="if(event.key==='Enter')guideSend()">
-        <button class="guide-send" onclick="guideSend()">Send</button>
-      </div>
+      </aside>
     </div>
   </div>
 </div>
