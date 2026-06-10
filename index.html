@@ -129,8 +129,8 @@ body::after {
 .logo-text .sub { font-size: 11px; color: rgba(255,255,255,0.6); margin-top: -1px; }
 .nav-links { display: flex; gap: 2px; }
 .nav-link {
-  padding: 7px 14px; border-radius: 999px;
-  font-size: 13.5px; font-weight: 500;
+  padding: 6px 10px; border-radius: 999px;
+  font-size: 12.5px; font-weight: 600;
   color: rgba(255,255,255,0.75);
   cursor: pointer; border: none; background: transparent;
   transition: all 0.15s; white-space: nowrap; font-family: var(--font);
@@ -840,6 +840,512 @@ body::after {
 .chat-send:hover { opacity: 0.85; }
 .chat-send svg { width: 16px; height: 16px; fill: white; }
 
+/* ── PRODUCT SYSTEM ───────────────────────────────────────── */
+.product-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(320px, 0.9fr);
+  gap: 20px;
+  align-items: stretch;
+}
+.panel {
+  background: rgba(255,255,255,0.88);
+  border: 1px solid rgba(209,213,219,0.75);
+  border-radius: var(--r-2xl);
+  box-shadow: var(--sh-card);
+  backdrop-filter: blur(8px);
+}
+.panel-soft {
+  background: rgba(255,255,255,0.76);
+}
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 1rem;
+}
+.panel-kicker {
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--cb-blue);
+  margin-bottom: 6px;
+}
+.panel-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--navy);
+  line-height: 1.2;
+}
+.panel-subtitle {
+  font-size: 14px;
+  color: var(--muted);
+  margin-top: 4px;
+}
+.hero-summary {
+  padding: 1.5rem;
+  position: relative;
+  overflow: hidden;
+}
+.hero-summary::after {
+  content: '';
+  position: absolute;
+  inset: auto -2rem -2rem auto;
+  width: 12rem;
+  height: 12rem;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0,179,136,0.08), transparent 65%);
+  pointer-events: none;
+}
+.progress-cluster {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 1rem;
+}
+.progress-card {
+  background: linear-gradient(180deg, rgba(245,245,240,0.94), rgba(255,255,255,0.96));
+  border: 1px solid var(--border-lt);
+  border-radius: var(--r-lg);
+  padding: 0.95rem;
+}
+.progress-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+.progress-value {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--navy);
+  line-height: 1.1;
+}
+.progress-note {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 4px;
+}
+.glance-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+.glance-card {
+  padding: 1rem 1.05rem;
+  border-radius: var(--r-xl);
+  border: 1px solid var(--border-lt);
+  background: rgba(255,255,255,0.88);
+}
+.glance-card.good { background: linear-gradient(180deg, rgba(230,247,243,0.95), rgba(255,255,255,0.95)); }
+.glance-card.warn { background: linear-gradient(180deg, rgba(254,243,199,0.92), rgba(255,255,255,0.95)); }
+.glance-card.risk { background: linear-gradient(180deg, rgba(254,242,242,0.95), rgba(255,255,255,0.95)); }
+.glance-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 8px;
+}
+.glance-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--navy);
+}
+.glance-score {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--navy);
+}
+.glance-copy {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.45;
+}
+.meter {
+  height: 8px;
+  border-radius: 999px;
+  background: var(--gray-100);
+  overflow: hidden;
+  margin-top: 10px;
+}
+.meter > span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--cb-blue), var(--teal));
+}
+.section-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  margin: 2rem 0 1rem;
+}
+.section-heading h3 {
+  font-size: 13px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--navy);
+}
+.section-heading p {
+  font-size: 13px;
+  color: var(--muted);
+}
+.action-strip {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+.action-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 1rem 1.05rem;
+  border: 1px solid var(--border-lt);
+  border-radius: var(--r-xl);
+  background: rgba(255,255,255,0.9);
+}
+.action-priority {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-top: 4px;
+  flex-shrink: 0;
+}
+.p-high { background: var(--red); }
+.p-med { background: var(--amber); }
+.p-low { background: var(--teal); }
+.action-meta { flex: 1; }
+.action-topline { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-bottom: 4px; }
+.priority-badge {
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: var(--gray-100);
+  color: var(--gray-700);
+}
+.time-pill {
+  font-size: 12px;
+  color: var(--muted);
+}
+.action-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 4px;
+}
+.action-reason {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.45;
+}
+.summary-layout {
+  display: grid;
+  grid-template-columns: 320px minmax(0, 1fr);
+  gap: 16px;
+  align-items: start;
+}
+.score-wheel {
+  width: 168px;
+  height: 168px;
+  border-radius: 50%;
+  margin: 0 auto;
+  background:
+    radial-gradient(circle at center, rgba(255,255,255,0.95) 0 56%, transparent 57%),
+    conic-gradient(var(--teal) 0 64%, var(--cb-blue) 64% 100%);
+  position: relative;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.65);
+}
+.score-wheel::after {
+  content: '';
+  position: absolute;
+  inset: 14px;
+  border-radius: 50%;
+  background: white;
+  border: 1px solid var(--border-lt);
+}
+.score-wheel-label {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  z-index: 1;
+}
+.score-wheel-num {
+  font-size: 42px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--navy);
+}
+.score-wheel-text {
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-top: 4px;
+}
+.breakdown-stack {
+  display: grid;
+  gap: 10px;
+}
+.breakdown-item {
+  border: 1px solid var(--border-lt);
+  border-radius: var(--r-xl);
+  padding: 1rem;
+  background: rgba(255,255,255,0.92);
+}
+.breakdown-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 6px;
+}
+.breakdown-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--navy);
+}
+.breakdown-score {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--cb-blue);
+}
+.breakdown-copy {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+.breakdown-footer {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 10px;
+}
+.mini-chip {
+  font-size: 12px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--gray-50);
+  color: var(--gray-700);
+}
+.tradeoff-card {
+  padding: 1.25rem 1.35rem;
+  border-radius: var(--r-2xl);
+  border: 1px solid rgba(209,213,219,0.75);
+  background: linear-gradient(135deg, rgba(30,58,95,0.96), rgba(30,58,95,0.88));
+  color: white;
+  box-shadow: var(--sh-md);
+}
+.tradeoff-card .panel-kicker,
+.tradeoff-card .panel-title,
+.tradeoff-card .panel-subtitle {
+  color: white;
+}
+.tradeoff-text {
+  font-size: 15px;
+  line-height: 1.6;
+  color: rgba(255,255,255,0.85);
+}
+.compare-controls {
+  display: grid;
+  grid-template-columns: 260px minmax(0, 1fr);
+  gap: 16px;
+  align-items: start;
+}
+.weight-slider {
+  padding: 1rem 1.1rem;
+  border: 1px solid var(--border-lt);
+  border-radius: var(--r-xl);
+  background: rgba(255,255,255,0.9);
+}
+.weight-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.weight-row label {
+  font-size: 13px;
+  color: var(--navy);
+  font-weight: 600;
+}
+.weight-row input[type="range"] {
+  width: 100%;
+  accent-color: var(--cb-blue);
+}
+.compare-grid {
+  display: grid;
+  gap: 12px;
+}
+.compare-row {
+  display: grid;
+  grid-template-columns: 190px repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  align-items: stretch;
+}
+.compare-row.header .compare-cell {
+  background: transparent;
+  border: none;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  font-weight: 800;
+  padding: 0 0 6px;
+}
+.compare-row.header .compare-cell:first-child {
+  padding-left: 6px;
+}
+.compare-row:not(.header) .compare-cell {
+  min-height: 100%;
+  background: rgba(255,255,255,0.9);
+  border: 1px solid var(--border-lt);
+  border-radius: var(--r-xl);
+  padding: 0.95rem;
+}
+.compare-row:not(.header) .compare-cell:first-child {
+  background: rgba(245,245,240,0.95);
+  font-weight: 700;
+  color: var(--navy);
+}
+.compare-cell .small {
+  display: block;
+  margin-top: 4px;
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.45;
+}
+.timeline-shell {
+  display: grid;
+  gap: 16px;
+}
+.timeline-month {
+  border: 1px solid var(--border-lt);
+  border-radius: var(--r-2xl);
+  background: rgba(255,255,255,0.9);
+  padding: 1.25rem;
+}
+.timeline-month h4 {
+  font-size: 16px;
+  color: var(--navy);
+  margin-bottom: 10px;
+}
+.timeline-list {
+  display: grid;
+  gap: 10px;
+}
+.timeline-item {
+  display: grid;
+  grid-template-columns: 16px minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: start;
+  padding: 0.95rem 0.95rem;
+  border-radius: var(--r-xl);
+  background: linear-gradient(180deg, rgba(245,245,240,0.95), rgba(255,255,255,0.95));
+  border: 1px solid var(--border-lt);
+}
+.timeline-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin-top: 4px;
+  background: var(--cb-blue);
+}
+.timeline-item h5 {
+  font-size: 14px;
+  color: var(--navy);
+  margin-bottom: 3px;
+}
+.timeline-item p {
+  font-size: 13px;
+  color: var(--muted);
+}
+.timeline-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: flex-end;
+}
+.timeline-meta .chip {
+  font-size: 11px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: var(--gray-100);
+  color: var(--gray-700);
+  font-weight: 700;
+}
+.system-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+.system-card {
+  background: rgba(255,255,255,0.9);
+  border: 1px solid var(--border-lt);
+  border-radius: var(--r-2xl);
+  padding: 1rem;
+}
+.system-card h4 {
+  font-size: 15px;
+  color: var(--navy);
+  margin-bottom: 8px;
+}
+.swatches {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.swatch {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  border: 1px solid rgba(0,0,0,0.08);
+}
+.tok {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--gray-50);
+  border: 1px solid var(--border-lt);
+  border-radius: 999px;
+  padding: 6px 10px;
+  font-size: 12px;
+  color: var(--gray-700);
+  margin: 0 6px 6px 0;
+}
+.empty-state {
+  background: rgba(255,255,255,0.9);
+  border: 1px dashed var(--border);
+  border-radius: var(--r-2xl);
+  padding: 1.5rem;
+  text-align: center;
+  color: var(--muted);
+}
+.loading-skeleton {
+  border-radius: var(--r-lg);
+  background: linear-gradient(90deg, #eceff3 25%, #f8fafc 37%, #eceff3 63%);
+  background-size: 400% 100%;
+  animation: shimmer 1.5s infinite;
+}
+@keyframes shimmer {
+  0% { background-position: 100% 0; }
+  100% { background-position: -100% 0; }
+}
+
 /* ── MODAL + TOAST ─────────────────────────────────────────── */
 .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 500; align-items: center; justify-content: center; }
 .overlay.open { display: flex; }
@@ -893,6 +1399,12 @@ body::after {
   .msg-bubble { max-width: 88%; }
   .q-nav { flex-direction: column; align-items: stretch; gap: 0.75rem; }
   .btn-continue, .btn-skip { width: 100%; text-align: center; }
+  .product-hero, .summary-layout, .compare-controls, .system-grid, .progress-cluster, .glance-grid, .action-strip { grid-template-columns: 1fr; }
+  .compare-row { grid-template-columns: 1fr; }
+  .compare-row.header { display: none; }
+  .timeline-item { grid-template-columns: 16px 1fr; }
+  .timeline-meta { grid-column: 2 / -1; align-items: flex-start; }
+  .breakdown-footer { grid-template-columns: 1fr; }
 }
 </style>
 </head>
@@ -907,11 +1419,15 @@ body::after {
     </div>
   </div>
   <div class="nav-links">
-    <button class="nav-link" onclick="goScreen('onboard')">Onboarding</button>
-    <button class="nav-link" onclick="goScreen('dashboard')">My Plan</button>
+    <button class="nav-link" onclick="goScreen('dashboard')">Home</button>
+    <button class="nav-link" onclick="goScreen('matches')">Matches</button>
+    <button class="nav-link" onclick="goScreen('fit')">Fit Score</button>
     <button class="nav-link" onclick="goScreen('compare')">Compare</button>
     <button class="nav-link" onclick="goScreen('afford')">Affordability</button>
+    <button class="nav-link" onclick="goScreen('admissions')">Admissions</button>
+    <button class="nav-link" onclick="goScreen('timeline')">Timeline</button>
     <button class="nav-link" onclick="goScreen('ai-counselor')">AI Counselor</button>
+    <button class="nav-link" onclick="goScreen('system')">System</button>
   </div>
   <div class="nav-right">
     <button class="nav-share" onclick="openModal()">
@@ -1028,48 +1544,140 @@ body::after {
 <!-- ═══════════════ DASHBOARD ═══════════════ -->
 <div id="screen-dashboard" class="screen">
   <div class="page">
-    <!-- Data callout -->
-    <div class="data-bar">
-      <div style="font-size:26px;flex-shrink:0">📊</div>
-      <div class="data-bar-copy">
-        <h3>Recommendations shaped by real student research</h3>
-        <p>Based on surveys of 192 students: 60% prioritize career outcomes, 54% cite program strength, 70% say academic + career fit defines a "good fit" school.</p>
-      </div>
-      <div class="data-bar-stats">
-        <div class="db-stat"><div class="db-num">60%</div><div class="db-label">Career outcomes<br>#1 factor</div></div>
-        <div class="db-stat"><div class="db-num">54%</div><div class="db-label">Program strength<br>#2 factor</div></div>
-        <div class="db-stat"><div class="db-num">45%</div><div class="db-label">Cost & aid<br>#3 factor</div></div>
+    <div class="product-hero">
+      <section class="panel hero-summary">
+        <div class="panel-kicker">Home dashboard</div>
+        <div class="panel-title">Good evening, Maya. Your college plan is 42% complete.</div>
+        <div class="panel-subtitle">BigFuture Pathfinder is keeping track of fit, cost, admissions odds, and what you still need to do next.</div>
+        <div class="progress-cluster">
+          <div class="progress-card">
+            <div class="progress-label">Saved schools</div>
+            <div class="progress-value" id="stat-saved">4</div>
+            <div class="progress-note">Strong balance so far</div>
+          </div>
+          <div class="progress-card">
+            <div class="progress-label">List balance</div>
+            <div class="progress-value">2-3-2</div>
+            <div class="progress-note">Reach / target / likely</div>
+          </div>
+          <div class="progress-card">
+            <div class="progress-label">Upcoming deadlines</div>
+            <div class="progress-value">3</div>
+            <div class="progress-note">Highest priority this week</div>
+          </div>
+          <div class="progress-card">
+            <div class="progress-label">Scholarship matches</div>
+            <div class="progress-value">4</div>
+            <div class="progress-note">$14k in aid matched</div>
+          </div>
+        </div>
+      </section>
+      <section class="panel panel-soft" style="padding:1.5rem">
+        <div class="panel-header">
+          <div>
+            <div class="panel-kicker">Your profile</div>
+            <div class="panel-title">College fit score: 84/100</div>
+            <div class="panel-subtitle">Biology / Health · Within 4 hours · Affordability matters a lot</div>
+          </div>
+        </div>
+        <div class="score-wheel">
+          <div class="score-wheel-label">
+            <div class="score-wheel-num">84</div>
+            <div class="score-wheel-text">fit score</div>
+          </div>
+        </div>
+        <div class="glance-copy" style="margin-top:14px">Your strongest advantage is academic and career alignment. The biggest risk is affordability on reach schools.</div>
+      </section>
+    </div>
+    <div class="section-heading">
+      <div>
+        <h3>Your Plan at a Glance</h3>
+        <p>What is working, what needs attention, and what to do next.</p>
       </div>
     </div>
-    <!-- Header -->
-    <div class="dash-head">
-      <div class="dh-left">
-        <h2>Your college plan, Maya 👋</h2>
-        <p>Biology / Health · Within 4 hours · Affordability: Very important</p>
+    <div class="glance-grid">
+      <div class="glance-card good">
+        <div class="glance-top"><div class="glance-title">What is going well</div><div class="glance-score">A</div></div>
+        <div class="glance-copy">Strong biology / health alignment and a healthy mix of campuses with clear career outcomes.</div>
       </div>
-      <div class="dh-stats">
-        <div class="dh-stat"><div class="num" id="stat-saved">0</div><div class="lbl">Saved</div></div>
-        <div class="dh-sep"></div>
-        <div class="dh-stat"><div class="num" id="stat-tasks">2/6</div><div class="lbl">Tasks done</div></div>
-        <div class="dh-sep"></div>
-        <div class="dh-stat"><div class="num">$14k</div><div class="lbl">Aid matched</div></div>
+      <div class="glance-card warn">
+        <div class="glance-top"><div class="glance-title">Needs attention</div><div class="glance-score">2</div></div>
+        <div class="glance-copy">A couple of schools need scholarship planning before they should feel safe to keep.</div>
+      </div>
+      <div class="glance-card risk">
+        <div class="glance-top"><div class="glance-title">Affordability risk</div><div class="glance-score">High</div></div>
+        <div class="glance-copy">UC Davis and UW are exciting, but they need a cost strategy so they do not dominate the list emotionally.</div>
+        <div class="meter"><span style="width:78%"></span></div>
+      </div>
+      <div class="glance-card good">
+        <div class="glance-top"><div class="glance-title">Saved schools</div><div class="glance-score">4</div></div>
+        <div class="glance-copy">UO, OSU, PSU, and WOU are giving you a stable foundation.</div>
+      </div>
+      <div class="glance-card warn">
+        <div class="glance-top"><div class="glance-title">Scholarship matches</div><div class="glance-score">$14k</div></div>
+        <div class="glance-copy">You already have aid matches. Now the goal is to turn them into actual applications.</div>
+      </div>
+      <div class="glance-card good">
+        <div class="glance-top"><div class="glance-title">Recommended next step</div><div class="glance-score">1</div></div>
+        <div class="glance-copy">Finish the UO scholarship application first. It has the clearest return for your current list.</div>
       </div>
     </div>
-    <!-- Grids -->
-    <div class="section-label"><h3>Strong academic + career fit</h3><span class="count-badge">2 schools</span></div>
-    <div class="college-grid" id="grid-strong"></div>
-    <div class="section-label"><h3>Affordable options</h3><span class="count-badge">3 schools</span></div>
-    <div class="college-grid" id="grid-afford"></div>
-    <div class="section-label"><h3>Reach — worth considering</h3><span class="count-badge">2 schools</span></div>
-    <div class="college-grid" id="grid-reach"></div>
-    <!-- Guide -->
+    <div class="section-heading">
+      <div>
+        <h3>Saved Schools</h3>
+        <p>Schools already in your working list.</p>
+      </div>
+      <p>Tap a school to compare or inspect fit details.</p>
+    </div>
+    <div class="college-grid" id="grid-saved"></div>
+    <div class="section-heading">
+      <div>
+        <h3>Weekly Checklist</h3>
+        <p>Small actions that reduce anxiety and keep momentum going.</p>
+      </div>
+      <p>1 hour total this week</p>
+    </div>
+    <div class="action-strip">
+      <div class="action-card">
+        <div class="action-priority p-high"></div>
+        <div class="action-meta">
+          <div class="action-topline"><span class="priority-badge">High</span><span class="time-pill">15 min</span></div>
+          <div class="action-title">Apply for the UO scholarship</div>
+          <div class="action-reason">It closes soon and has the clearest payoff for your current list.</div>
+        </div>
+      </div>
+      <div class="action-card">
+        <div class="action-priority p-high"></div>
+        <div class="action-meta">
+          <div class="action-topline"><span class="priority-badge">High</span><span class="time-pill">20 min</span></div>
+          <div class="action-title">Review your reach schools</div>
+          <div class="action-reason">Check whether UC Davis and UW stay realistic once cost is added.</div>
+        </div>
+      </div>
+      <div class="action-card">
+        <div class="action-priority p-med"></div>
+        <div class="action-meta">
+          <div class="action-topline"><span class="priority-badge">Medium</span><span class="time-pill">10 min</span></div>
+          <div class="action-title">Compare two affordable options</div>
+          <div class="action-reason">This helps keep your list emotionally balanced and financially safer.</div>
+        </div>
+      </div>
+      <div class="action-card">
+        <div class="action-priority p-low"></div>
+        <div class="action-meta">
+          <div class="action-topline"><span class="priority-badge">Low</span><span class="time-pill">15 min</span></div>
+          <div class="action-title">Talk to your counselor</div>
+          <div class="action-reason">A quick check-in can unlock the next decision with less stress.</div>
+        </div>
+      </div>
+    </div>
     <div class="guide-card">
       <div class="guide-head">
         <div class="guide-icon">✦</div>
         <div class="guide-head-text"><h3>Pathfinder Guide</h3><p>Your personal planning assistant</p></div>
       </div>
       <div class="guide-msgs" id="g-msgs">
-        <div class="gm bot">Your list is strong on academics and career alignment — great start! It's a bit reach-heavy right now. I'd suggest adding 1–2 target schools with better affordability. Want me to find options that match your biology interest?</div>
+        <div class="gm bot">You are in a strong place academically. The main thing to solve now is how to keep the list balanced without losing the schools you are excited about.</div>
       </div>
       <div class="guide-chips">
         <button class="guide-chip" onclick="guideAsk('How do I balance my list?')">Balance my list?</button>
@@ -1082,39 +1690,297 @@ body::after {
         <button class="guide-send" onclick="guideSend()">Send</button>
       </div>
     </div>
-    <!-- Checklist -->
-    <div class="checklist-card">
-      <div class="cl-header"><h3>This week's plan</h3><span class="cl-progress-label" id="cl-lbl">2 of 6 done</span></div>
-      <div class="cl-sub">Small actions, real progress — check things off as you go.</div>
-      <div class="cl-track"><div class="cl-fill" id="cl-fill" style="width:33%"></div></div>
-      <div id="cl-items"></div>
-    </div>
   </div>
 </div>
 
 <!-- ═══════════════ COMPARE ═══════════════ -->
 <div id="screen-compare" class="screen">
   <div class="page">
-    <div style="margin-bottom:1.5rem">
-      <h2 style="font-size:24px;font-weight:700;color:var(--navy);margin-bottom:6px">Compare schools</h2>
-      <p style="color:var(--muted);font-size:15px">Select up to 4 schools to compare side by side. Career data, cost, and placement rates included.</p>
+    <div class="panel tradeoff-card" style="margin-bottom:1.25rem">
+      <div class="panel-kicker">Compare colleges</div>
+      <div class="panel-title">Tradeoff summary</div>
+      <div class="tradeoff-text">UC Davis has the strongest academic fit, but Oregon options are more affordable. Cal Poly brings strong career outcomes with a tougher admissions profile, while Portland State and Western Oregon keep the list safer on cost and confidence.</div>
     </div>
-    <div class="compare-pills" id="cpills"></div>
-    <div class="compare-wrap" id="compare-wrap"></div>
+    <div class="compare-controls" style="margin-bottom:1.25rem">
+      <div class="weight-slider">
+        <div class="panel-kicker">What matters most</div>
+        <div class="panel-title" style="font-size:17px;margin-bottom:10px">Adjust your weighting</div>
+        <div class="weight-row">
+          <label>Cost</label><span style="font-size:12px;color:var(--muted)">30%</span>
+          <input type="range" min="0" max="100" value="78">
+        </div>
+        <div class="weight-row">
+          <label>Career outcomes</label><span style="font-size:12px;color:var(--muted)">24%</span>
+          <input type="range" min="0" max="100" value="72">
+        </div>
+        <div class="weight-row">
+          <label>Major strength</label><span style="font-size:12px;color:var(--muted)">22%</span>
+          <input type="range" min="0" max="100" value="85">
+        </div>
+        <div class="weight-row">
+          <label>Location</label><span style="font-size:12px;color:var(--muted)">18%</span>
+          <input type="range" min="0" max="100" value="64">
+        </div>
+        <div class="weight-row" style="margin-bottom:0">
+          <label>Campus life</label><span style="font-size:12px;color:var(--muted)">14%</span>
+          <input type="range" min="0" max="100" value="56">
+        </div>
+      </div>
+      <div class="panel" style="padding:1.2rem">
+        <div class="panel-header">
+          <div>
+            <div class="panel-kicker">Comparison view</div>
+            <div class="panel-title">Up to 4 schools at a time</div>
+            <div class="panel-subtitle">Use this to compare fit, cost, admissions, and the tradeoff behind each option.</div>
+          </div>
+        </div>
+        <div class="compare-pills" id="cpills"></div>
+        <div class="compare-wrap" id="compare-wrap"></div>
+      </div>
+    </div>
   </div>
 </div>
 
 <!-- ═══════════════ AFFORDABILITY ═══════════════ -->
 <div id="screen-afford" class="screen">
   <div class="page">
-    <div style="margin-bottom:1.5rem">
-      <h2 style="font-size:24px;font-weight:700;color:var(--navy);margin-bottom:6px">Affordability & Scholarships</h2>
-      <p style="color:var(--muted);font-size:15px">Cost signals, financial aid steps, and matched scholarships for your plan.</p>
+    <div class="panel tradeoff-card" style="margin-bottom:1.25rem">
+      <div class="panel-kicker">Affordability</div>
+      <div class="panel-title">College cost should feel understandable, not scary.</div>
+      <div class="tradeoff-text">Pathfinder separates sticker price from what you may actually pay, then shows where scholarships can lower the risk.</div>
     </div>
-    <div class="section-label"><h3>Cost signals</h3></div>
-    <div class="afford-grid" id="afford-grid"></div>
-    <div class="section-label"><h3>Matched scholarships</h3><span class="count-badge">4 matches</span></div>
-    <div class="sch-card" id="sch-list"></div>
+    <div class="summary-layout">
+      <div class="panel" style="padding:1.3rem">
+        <div class="panel-kicker">Cost reality check</div>
+        <div class="panel-title">Is this school financially realistic?</div>
+        <div class="panel-subtitle">A supportive read on whether the number is manageable, with context.</div>
+        <div class="glance-card risk" style="margin-top:12px">
+          <div class="glance-top"><div class="glance-title">Reality check</div><div class="glance-score">Needs scholarship</div></div>
+          <div class="glance-copy">UC Davis and UW are high-risk without stronger aid. UO, PSU, and WOU are the safest anchors right now.</div>
+        </div>
+        <div class="section-heading" style="margin-top:1rem">
+          <div>
+            <h3>Cost signals</h3>
+            <p>Sticker price, net price, and support markers.</p>
+          </div>
+        </div>
+        <div class="afford-grid" id="afford-grid"></div>
+      </div>
+      <div class="panel" style="padding:1.3rem">
+        <div class="panel-kicker">Aid progress</div>
+        <div class="panel-title">Scholarship pipeline</div>
+        <div class="panel-subtitle">These matches are a head start, not a final answer.</div>
+        <div class="meter" style="margin:14px 0 10px"><span style="width:56%"></span></div>
+        <div class="glance-copy">FAFSA status: start soon. CSS Profile: only if required by the school.</div>
+        <div class="section-heading" style="margin-top:1rem">
+          <div>
+            <h3>Matched scholarships</h3>
+            <p>Use these to reduce stress and improve the financial picture.</p>
+          </div>
+        </div>
+        <div class="sch-card" id="sch-list"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ MATCHES ═══════════════ -->
+<div id="screen-matches" class="screen">
+  <div class="page">
+    <div class="panel tradeoff-card" style="margin-bottom:1.25rem">
+      <div class="panel-kicker">College matches</div>
+      <div class="panel-title">Personalized fit list, not a generic ranking.</div>
+      <div class="tradeoff-text">Every card explains why a school fits Maya and what the tradeoff is, so the list feels useful instead of overwhelming.</div>
+    </div>
+    <div class="section-heading">
+      <div>
+        <h3>Filters</h3>
+        <p>Refine by cost, distance, major, school size, admissions odds, and more.</p>
+      </div>
+    </div>
+    <div class="guide-chips" style="margin-bottom:1.25rem">
+      <span class="guide-chip" style="pointer-events:none">Cost</span>
+      <span class="guide-chip" style="pointer-events:none">Distance</span>
+      <span class="guide-chip" style="pointer-events:none">Major</span>
+      <span class="guide-chip" style="pointer-events:none">School size</span>
+      <span class="guide-chip" style="pointer-events:none">Admissions odds</span>
+      <span class="guide-chip" style="pointer-events:none">Career outcomes</span>
+      <span class="guide-chip" style="pointer-events:none">Campus vibe</span>
+      <span class="guide-chip" style="pointer-events:none">Public / private</span>
+      <span class="guide-chip" style="pointer-events:none">Fit score</span>
+      <span class="guide-chip" style="pointer-events:none">Affordability</span>
+    </div>
+    <div class="college-grid" id="matches-grid"></div>
+  </div>
+</div>
+
+<!-- ═══════════════ FIT BREAKDOWN ═══════════════ -->
+<div id="screen-fit" class="screen">
+  <div class="page">
+    <div class="panel tradeoff-card" style="margin-bottom:1.25rem">
+      <div class="panel-kicker">Fit score breakdown</div>
+      <div class="panel-title">Why a school fits, or where it falls short.</div>
+      <div class="tradeoff-text">The score wheel is the starting point. Pathfinder breaks the score into plain English so Maya can understand the tradeoffs without decoding a spreadsheet.</div>
+    </div>
+    <div class="summary-layout">
+      <div class="panel" style="padding:1.3rem;text-align:center">
+        <div class="panel-kicker">Overall fit</div>
+        <div class="score-wheel">
+          <div class="score-wheel-label">
+            <div class="score-wheel-num">84</div>
+            <div class="score-wheel-text">fit score</div>
+          </div>
+        </div>
+        <div class="glance-copy" id="fit-meaning" style="margin-top:14px">Loading fit summary...</div>
+      </div>
+      <div class="breakdown-stack" id="fit-stack"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ ADMISSIONS STRATEGY ═══════════════ -->
+<div id="screen-admissions" class="screen">
+  <div class="page">
+    <div class="panel tradeoff-card" style="margin-bottom:1.25rem">
+      <div class="panel-kicker">Admissions strategy</div>
+      <div class="panel-title">List balance keeps the plan realistic.</div>
+      <div class="tradeoff-text">This view makes it obvious whether Maya has enough reach, target, and likely schools, and shows exactly what to change next.</div>
+    </div>
+    <div class="summary-layout">
+      <div class="panel" style="padding:1.3rem">
+        <div class="panel-kicker">List balance</div>
+        <div class="panel-title">Reach / Target / Likely</div>
+        <div class="panel-subtitle">A simple breakdown that reduces overload.</div>
+        <div class="glance-grid" style="margin-top:12px">
+          <div class="glance-card risk"><div class="glance-top"><div class="glance-title">Reach</div><div class="glance-score">2</div></div><div class="glance-copy">Keep them, but don't let them dominate the list.</div></div>
+          <div class="glance-card warn"><div class="glance-top"><div class="glance-title">Target</div><div class="glance-score">3</div></div><div class="glance-copy">This is the healthiest part of the plan.</div></div>
+          <div class="glance-card good"><div class="glance-top"><div class="glance-title">Likely</div><div class="glance-score">2</div></div><div class="glance-copy">These reduce pressure and help with confidence.</div></div>
+        </div>
+        <div class="section-heading" style="margin-top:1rem">
+          <div>
+            <h3>Recommended changes</h3>
+            <p>What the list still needs.</p>
+          </div>
+        </div>
+        <div class="action-strip" style="grid-template-columns:1fr">
+          <div class="action-card">
+            <div class="action-priority p-high"></div>
+            <div class="action-meta"><div class="action-title">Add 2 target schools</div><div class="action-reason">Target schools will make the list feel safer and more balanced.</div></div>
+          </div>
+          <div class="action-card">
+            <div class="action-priority p-med"></div>
+            <div class="action-meta"><div class="action-title">Add 1 likely school with strong biology outcomes</div><div class="action-reason">This helps keep confidence high while preserving major strength.</div></div>
+          </div>
+          <div class="action-card">
+            <div class="action-priority p-med"></div>
+            <div class="action-meta"><div class="action-title">Review cost risk for 3 schools</div><div class="action-reason">Keep the plan exciting, but make sure it is still financially real.</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="panel" style="padding:1.3rem">
+        <div class="panel-kicker">Admissions cards</div>
+        <div class="panel-title">Each school at a glance</div>
+        <div class="panel-subtitle">Admission odds, deadlines, required materials, and next action.</div>
+        <div class="timeline-shell" id="admissions-list" style="margin-top:12px"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ TIMELINE ═══════════════ -->
+<div id="screen-timeline" class="screen">
+  <div class="page">
+    <div class="panel tradeoff-card" style="margin-bottom:1.25rem">
+      <div class="panel-kicker">Timeline</div>
+      <div class="panel-title">College planning, organized by month.</div>
+      <div class="tradeoff-text">This timeline keeps the process manageable by turning the big application season into small, clear steps with deadlines and AI support.</div>
+    </div>
+    <div class="timeline-shell" id="timeline-months"></div>
+  </div>
+</div>
+
+<!-- ═══════════════ DESIGN SYSTEM ═══════════════ -->
+<div id="screen-system" class="screen">
+  <div class="page">
+    <div class="panel tradeoff-card" style="margin-bottom:1.25rem">
+      <div class="panel-kicker">Design system</div>
+      <div class="panel-title">A College Board-inspired visual language for BigFuture Pathfinder.</div>
+      <div class="tradeoff-text">Soft neutrals, confident blue, supportive teal, clear hierarchy, and calm spacing help the product feel trustworthy and welcoming.</div>
+    </div>
+    <div class="system-grid">
+      <div class="system-card">
+        <h4>Typography</h4>
+        <div class="tok">Source Sans 3</div>
+        <div class="tok">14-16px body</div>
+        <div class="tok">700 weight headings</div>
+        <div class="tok">Plain English copy</div>
+        <div id="system-tokens" style="margin-top:10px"></div>
+      </div>
+      <div class="system-card">
+        <h4>Color palette</h4>
+        <div class="swatches" id="system-swatches"></div>
+      </div>
+      <div class="system-card">
+        <h4>Core principles</h4>
+        <div class="tok">Supportive</div>
+        <div class="tok">Clear</div>
+        <div class="tok">Friendly</div>
+        <div class="tok">Not childish</div>
+        <div class="tok">Not overwhelming</div>
+      </div>
+      <div class="system-card">
+        <h4>Card behavior</h4>
+        <div class="tok">Rounded 24px</div>
+        <div class="tok">Light borders</div>
+        <div class="tok">Soft elevation</div>
+        <div class="tok">Clear headings</div>
+      </div>
+      <div class="system-card">
+        <h4>States</h4>
+        <div class="tok">Loading skeleton</div>
+        <div class="tok">Empty state</div>
+        <div class="tok">Success state</div>
+        <div class="tok">Helpful error copy</div>
+      </div>
+      <div class="system-card">
+        <h4>Navigation</h4>
+        <div class="tok">Top tabs</div>
+        <div class="tok">Contextual chips</div>
+        <div class="tok">Modal actions</div>
+        <div class="tok">Mobile-friendly stack</div>
+      </div>
+    </div>
+    <div class="section-heading">
+      <div>
+        <h3>UX principles</h3>
+        <p>What makes the experience trustworthy and useful.</p>
+      </div>
+    </div>
+    <div class="action-strip">
+      <div class="action-card"><div class="action-priority p-low"></div><div class="action-meta"><div class="action-title">Always explain why</div><div class="action-reason">Every recommendation should come with a human-readable reason.</div></div></div>
+      <div class="action-card"><div class="action-priority p-low"></div><div class="action-meta"><div class="action-title">No score without context</div><div class="action-reason">Scores should always be paired with the supporting data.</div></div></div>
+      <div class="action-card"><div class="action-priority p-low"></div><div class="action-meta"><div class="action-title">Make tradeoffs clear</div><div class="action-reason">Students should see what they gain and what they give up.</div></div></div>
+      <div class="action-card"><div class="action-priority p-low"></div><div class="action-meta"><div class="action-title">Prioritize next actions</div><div class="action-reason">The product should always surface the next helpful step.</div></div></div>
+    </div>
+    <div class="section-heading">
+      <div>
+        <h3>Empty, loading, and error patterns</h3>
+        <p>These keep the UI calm when data is missing or still loading.</p>
+      </div>
+    </div>
+    <div class="glance-grid">
+      <div class="empty-state">No schools selected yet. Add a few to see the comparison view come alive.</div>
+      <div class="panel" style="padding:1rem">
+        <div class="loading-skeleton" style="height:18px;width:65%;margin-bottom:10px"></div>
+        <div class="loading-skeleton" style="height:18px;width:88%;margin-bottom:10px"></div>
+        <div class="loading-skeleton" style="height:18px;width:72%"></div>
+      </div>
+      <div class="panel" style="padding:1rem">
+        <div class="panel-kicker" style="color:var(--red)">Error state</div>
+        <div class="panel-title" style="font-size:17px">We could not load one school right now.</div>
+        <div class="panel-subtitle">Try again in a moment, or keep planning with the rest of the list.</div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -1239,6 +2105,133 @@ const OB_QS = [
   {step:"Step 5 — Affordability",q:"How important is keeping costs low?",hint:"45% of students rank cost & financial aid as a top 3 factor when applying",opts:[{icon:"💰",label:"Very important",career:"Filter to best value schools"},{icon:"🏦",label:"Important",career:"Balance cost with fit"},{icon:"📈",label:"Somewhat important",career:"Cost is one factor"},{icon:"🎯",label:"Less of a concern",career:"Prioritize fit over price"}]},
   {step:"Step 6 — Career clarity",q:"How clear are you on your career direction?",hint:"60% of students say career outcomes are their #1 factor in choosing a school",opts:[{icon:"🎯",label:"Very clear",career:""},{icon:"🔍",label:"General direction",career:""},{icon:"💡",label:"Still exploring",career:""},{icon:"🌱",label:"Just starting out",career:""}]}
 ];
+const COLLEGE_META = {
+  "University of Oregon": {
+    acceptance: "85%",
+    earnings: "$58k",
+    majorStrength: "Biology / Pre-med",
+    size: "Large public",
+    vibe: "Campus energy + school spirit",
+    distance: "Within 4 hours",
+    type: "Public",
+    deadline: "Jan 15",
+    why: "Strong life sciences support and a clear path into health careers.",
+    tradeoff: "More affordable than peers, but academic competition for spots in some programs still matters."
+  },
+  "Cal Poly SLO": {
+    acceptance: "33%",
+    earnings: "$62k",
+    majorStrength: "Health sciences",
+    size: "Medium public",
+    vibe: "Hands-on, project-based",
+    distance: "Open to travel",
+    type: "Public",
+    deadline: "Nov 30",
+    why: "Learn-by-doing model with strong outcomes in health and STEM.",
+    tradeoff: "Admission is tougher and housing can be tight, so planning ahead matters."
+  },
+  "Portland State University": {
+    acceptance: "93%",
+    earnings: "$52k",
+    majorStrength: "Biology",
+    size: "Large urban public",
+    vibe: "City access + flexible",
+    distance: "Within 2 hours",
+    type: "Public",
+    deadline: "Rolling",
+    why: "A practical, lower-risk option with strong city internships.",
+    tradeoff: "Less traditional campus feel than a residential university."
+  },
+  "Oregon State University": {
+    acceptance: "83%",
+    earnings: "$60k",
+    majorStrength: "Pre-med / Biology",
+    size: "Large public",
+    vibe: "Classic college town",
+    distance: "Within 4 hours",
+    type: "Public",
+    deadline: "Jan 31",
+    why: "Solid academics and strong support for health careers.",
+    tradeoff: "Total cost can climb without merit aid or grants."
+  },
+  "Western Oregon University": {
+    acceptance: "86%",
+    earnings: "$48k",
+    majorStrength: "Health sciences",
+    size: "Small public",
+    vibe: "Close-knit, calm",
+    distance: "Within 2 hours",
+    type: "Public",
+    deadline: "Rolling",
+    why: "Affordable and supportive, which lowers decision anxiety fast.",
+    tradeoff: "Fewer large-campus resources and fewer nearby research options."
+  },
+  "UC Davis": {
+    acceptance: "41%",
+    earnings: "$72k",
+    majorStrength: "Biology / Biochemistry",
+    size: "Large public",
+    vibe: "Research-forward",
+    distance: "Open to travel",
+    type: "Public",
+    deadline: "Nov 30",
+    why: "Best in class academic depth and strong career outcomes.",
+    tradeoff: "Highest affordability risk on the list."
+  },
+  "University of Washington": {
+    acceptance: "45%",
+    earnings: "$68k",
+    majorStrength: "Biology / Neuroscience",
+    size: "Very large public",
+    vibe: "Urban + research intensive",
+    distance: "Open to travel",
+    type: "Public",
+    deadline: "Jan 15",
+    why: "Excellent research and internship access in a major city.",
+    tradeoff: "More selective and costlier than nearby in-state options."
+  }
+};
+const FIT_SECTIONS = [
+  ["Academic fit", 92, "Your biology / health interests line up with the strength of the program and the support structures around it.", "Course rigor is strong but manageable if you keep a balanced list.", "Use this as a target school; check honors and advising options."],
+  ["Career fit", 89, "The internship and placement story is strong for a student interested in health and research.", "Some schools are better for local networking than national brand recognition.", "Compare internship access before deciding."],
+  ["Cost fit", 64, "The net cost is reasonable at some schools, but a few options need scholarship support.", "UC Davis and UW raise your overall budget risk.", "Build a scholarship plan before finalizing reaches."],
+  ["Admissions fit", 71, "You have a realistic mix, but a couple of admissions outcomes are far from guaranteed.", "Reach schools should be treated as stretch opportunities, not anchors.", "Keep at least 2 strong likelies or targets."],
+  ["Location fit", 84, "Most of the list stays within a sensible West Coast travel zone.", "Open-to-anywhere schools increase flexibility but also distance from home.", "Pick one distance anchor and one stretch option."],
+  ["Campus life fit", 76, "You have a healthy mix of large, medium, and smaller campuses.", "A few schools are a better personality match than others.", "Visit or compare campus vibe before applying."],
+  ["Belonging fit", 73, "The schools vary in scale and culture, so support systems matter.", "A larger school may feel anonymous if you want close attention.", "Look at first-gen and advising support."],
+  ["Support fit", 88, "Several schools offer advising, aid, and career support that can reduce stress.", "Support is strongest where you actually use it early.", "Connect with advising before deadlines hit."]
+];
+const TIMELINE_MONTHS = [
+  {month:"August", items:[
+    {title:"Research colleges", detail:"Narrow your list to about 8 schools by major, cost, and distance.", status:"Done", deadline:"Aug 20", priority:"High", time:"1-2 hrs", school:"All schools"},
+    {title:"Build balanced list", detail:"Make sure you have reach, target, and likely schools.", status:"In progress", deadline:"Aug 30", priority:"High", time:"45 min", school:"All schools"}
+  ]},
+  {month:"September", items:[
+    {title:"Visit campuses", detail:"Compare what feels supportive, safe, and motivating.", status:"Planned", deadline:"Sep 18", priority:"Med", time:"Half day", school:"UO / OSU"},
+    {title:"Ask for recommendation letters", detail:"Ask teachers early so they have time to write thoughtful letters.", status:"Planned", deadline:"Sep 25", priority:"High", time:"20 min", school:"Common App"}
+  ]},
+  {month:"October", items:[
+    {title:"Draft essays", detail:"Start with the story you want colleges to remember.", status:"Planned", deadline:"Oct 10", priority:"High", time:"2 hrs", school:"All schools"},
+    {title:"Find scholarships", detail:"Build a scholarship pipeline before deadlines stack up.", status:"Planned", deadline:"Oct 31", priority:"High", time:"30 min", school:"UO / Oregon grant"}
+  ]},
+  {month:"November", items:[
+    {title:"Submit FAFSA", detail:"Get your aid profile in early so cost estimates are real.", status:"Planned", deadline:"Nov 15", priority:"High", time:"45 min", school:"Federal aid"},
+    {title:"Submit applications", detail:"Focus on your best-fit schools first, then your reaches.", status:"Planned", deadline:"Nov 30", priority:"High", time:"2 hrs", school:"UC Davis / Cal Poly"}
+  ]},
+  {month:"December", items:[
+    {title:"Compare aid offers", detail:"Look at net cost, not just sticker price.", status:"Upcoming", deadline:"Dec 15", priority:"High", time:"30 min", school:"All admitted schools"},
+    {title:"Make final decision", detail:"Use fit, cost, and belonging together instead of one score alone.", status:"Upcoming", deadline:"Dec 31", priority:"High", time:"30 min", school:"Final school"}
+  ]}
+];
+const DESIGN_TOKENS = [
+  {label:"Navy", value:"#1e3a5f"},
+  {label:"Blue", value:"#0077c8"},
+  {label:"Teal", value:"#00b388"},
+  {label:"Cream", value:"#f5f5f0"},
+  {label:"Border", value:"#d1d5db"},
+  {label:"Text", value:"#1a1a1a"}
+];
+const MATCHES = COLLEGES.map(c => ({...c, ...COLLEGE_META[c.name]}));
 const GUIDE_ANSWERS = {
   "How do I balance my list?":"Your list is reach-heavy — UC Davis and UW are both very competitive. Add Portland State and Western Oregon as clear safeties. A healthy list: ~2 safeties, 3 targets, and 2 reaches. You're close — just need one more target.",
   "Which school is most affordable?":"Western Oregon University has the lowest estimated cost at $11,400/yr, followed by Portland State at $12,800. Both have strong need-based aid programs you haven't fully explored yet.",
@@ -1259,7 +2252,7 @@ const AC_ANSWERS = {
 };
 
 // ═══════ STATE ═══════
-let savedSet = new Set();
+let savedSet = new Set([1,3,4,5]);
 let compareSet = new Set([1,2,3]);
 let obStep = 0;
 let obAnswers = {};
@@ -1269,12 +2262,17 @@ function goScreen(name) {
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.querySelectorAll('.nav-link').forEach(b=>b.classList.remove('active'));
   document.getElementById('screen-'+name).classList.add('active');
-  const map={landing:null,onboard:0,dashboard:1,compare:2,afford:3,'ai-counselor':4};
+  const map={landing:null,onboard:0,dashboard:1,matches:2,fit:3,compare:4,afford:5,admissions:6,timeline:7,'ai-counselor':8,system:9};
   const btns=document.querySelectorAll('.nav-link');
   if(map[name]!=null) btns[map[name]].classList.add('active');
   if(name==='dashboard') renderDash();
+  if(name==='matches')   renderMatches();
+  if(name==='fit')       renderFit();
   if(name==='compare')   renderCompare();
   if(name==='afford')    renderAfford();
+  if(name==='admissions') renderAdmissions();
+  if(name==='timeline')   renderTimeline();
+  if(name==='system')     renderSystem();
 }
 
 // ═══════ RING ═══════
@@ -1329,10 +2327,8 @@ function toCompare(id){ compareSet.add(id); goScreen('compare'); }
 
 // ═══════ DASHBOARD ═══════
 function renderDash(){
-  ['strong','afford','reach'].forEach(cat=>{
-    const el=document.getElementById('grid-'+cat);
-    if(el) el.innerHTML=COLLEGES.filter(c=>c.cat===cat).map(card).join('');
-  });
+  const saved=document.getElementById('grid-saved');
+  if(saved) saved.innerHTML=COLLEGES.filter(c=>savedSet.has(c.id)).map(card).join('');
   renderCL();
 }
 function renderCL(){
@@ -1363,20 +2359,24 @@ function renderCompare(){
   if(!pills||!wrap) return;
   pills.innerHTML=COLLEGES.map(c=>`<button class="cpill${compareSet.has(c.id)?' sel':''}" onclick="toggleCP(${c.id})">${c.name}</button>`).join('');
   const sel=COLLEGES.filter(c=>compareSet.has(c.id)).slice(0,4);
-  if(!sel.length){ wrap.innerHTML='<div style="padding:2.5rem;text-align:center;color:var(--muted);font-size:15px">Select schools above to compare.</div>'; return; }
+  if(!sel.length){ wrap.innerHTML='<div class="empty-state" style="margin-top:0">Select schools above to compare.</div>'; return; }
   const rows=[
-    {lbl:"Overall fit",fn:c=>`<div class="sbar-wrap"><div class="sbar-track"><div class="sbar-fill" style="width:${c.score}%"></div></div><strong>${c.score}</strong><span style="font-size:12px;color:var(--muted)">/100</span></div>`},
-    {lbl:"Est. annual cost",fn:c=>`<strong style="font-size:16px">${c.cost}</strong><span style="font-size:12px;color:var(--muted)"> /yr</span>`},
-    {lbl:"Career placement",fn:c=>`<strong style="color:${c.placement>=90?'var(--teal)':'var(--cb-blue)'}">${c.placement}%</strong>`},
-    {lbl:"Median starting salary",fn:c=>`<strong>${c.salary}</strong>`},
-    {lbl:"Internship partners",fn:c=>c.interns},
-    {lbl:"Graduation rate",fn:c=>`<strong>${c.gradRate}%</strong>`},
-    {lbl:"Top careers",fn:c=>`<div style="display:flex;flex-wrap:wrap;gap:3px">${c.careers.slice(0,2).map(x=>`<span class="tag t-major" style="font-size:11px">${x}</span>`).join('')}</div>`},
-    {lbl:"Application type",fn:c=>{const m={reach:'t-reach',target:'t-target',safety:'t-safety'};return `<span class="tag ${m[c.tag]}">${c.tag.charAt(0).toUpperCase()+c.tag.slice(1)}</span>`}},
-    {lbl:"Affordability",fn:c=>{const m={good:['t-aff-g','Likely affordable'],warn:['t-aff-w','Cost concern'],bad:['t-aff-b','Needs support']};const[cl,lb]=m[c.afford];return `<span class="tag ${cl}">${lb}</span>`}},
-    {lbl:"Recommended action",fn:c=>{const m={add:['ap-add','Add to list'],aid:['ap-aid','Research aid'],ask:['ap-ask','Ask counselor'],remove:['ap-remove','Review priority']};const[cl,lb]=m[c.action];return `<span class="act-pill ${cl}">${lb}</span>`}},
+    {lbl:"Fit score",fn:c=>`<div><strong style="font-size:18px">${c.score}</strong><span class="small">Why: ${c.major}</span><div class="meter" style="margin-top:8px"><span style="width:${c.score}%"></span></div></div>`},
+    {lbl:"Net cost",fn:c=>`<strong style="font-size:16px">${c.cost}</strong><span class="small">Estimated annual net cost</span>`},
+    {lbl:"Admissions odds",fn:c=>`<strong style="font-size:16px">${c.tag==='reach'?'Reach':c.tag==='target'?'Target':'Likely'}</strong><span class="small">Acceptance and odds vary by program</span>`},
+    {lbl:"Graduation rate",fn:c=>`<strong style="font-size:16px">${c.gradRate}%</strong><span class="small">Completion momentum</span>`},
+    {lbl:"Career outcomes",fn:c=>`<strong style="font-size:16px">${c.placement}%</strong><span class="small">Placement / internships</span>`},
+    {lbl:"Major strength",fn:c=>`<strong style="font-size:16px">${c.major}</strong><span class="small">${c.careers[0]}</span>`},
+    {lbl:"Campus life",fn:c=>`<span class="tag t-major">${c.name==='Western Oregon University'?'Small and supportive':c.name==='Portland State University'?'Urban and flexible':'Balanced and active'}</span>`},
+    {lbl:"Distance from home",fn:c=>`<strong style="font-size:16px">${c.loc.split(', ').slice(1).join(', ')}</strong><span class="small">${c.explain.includes('Within')?c.explain.match(/Within [^\.]+/)[0]:'Travel required'}</span>`},
+    {lbl:"Scholarship potential",fn:c=>`<span class="tag ${c.afford==='good'?'t-aff-g':c.afford==='warn'?'t-aff-w':'t-aff-b'}">${c.afford==='good'?'Strong':'Needs work'}</span>`},
+    {lbl:"Application deadline",fn:c=>`<strong style="font-size:16px">${c.name==='Portland State University'?'Rolling':c.name==='Cal Poly SLO'?'Nov 30':c.name==='UC Davis'?'Nov 30':c.name==='University of Washington'?'Jan 15':c.name==='Oregon State University'?'Jan 31':'Jan 15'}</strong>`},
+    {lbl:"Pros",fn:c=>`<span class="small">${c.explain.split(' — ')[0]}</span>`},
+    {lbl:"Cons",fn:c=>`<span class="small">${c.tradeoff || 'Higher cost or more selectivity than your safest options.'}</span>`},
+    {lbl:"Best for",fn:c=>`<span class="small">${c.why}</span>`},
+    {lbl:"Main tradeoff",fn:c=>`<span class="small">${c.tradeoff}</span>`},
   ];
-  wrap.innerHTML=`<table><thead><tr><th>Category</th>${sel.map(c=>`<th>${c.name}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr><td>${r.lbl}</td>${sel.map(c=>`<td>${r.fn(c)}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
+  wrap.innerHTML=`<div class="compare-grid"><div class="compare-row header"><div class="compare-cell">Category</div>${sel.map(c=>`<div class="compare-cell">${c.name}</div>`).join('')}</div>${rows.map(r=>`<div class="compare-row"><div class="compare-cell">${r.lbl}</div>${sel.map(c=>`<div class="compare-cell">${r.fn(c)}</div>`).join('')}</div>`).join('')}</div>`;
 }
 function toggleCP(id){ compareSet.has(id)?compareSet.delete(id):(compareSet.size<4&&compareSet.add(id)); renderCompare(); }
 
@@ -1394,6 +2394,125 @@ function renderAfford(){
   sl.innerHTML=SCHOLARSHIPS.map((s,i)=>`<div class="sch-item"><div class="sch-row1"><div><div class="sch-name">${s.name}</div><div class="sch-org">${s.org}</div></div><div class="sch-amt">${s.amt}</div></div><div class="sch-dl">Deadline: <strong>${s.dl}</strong></div><div class="sch-acts"><button class="sch-btn${s.saved?' saved':''}" onclick="toggleSch(${i})">${s.saved?'✓ Saved':'Save scholarship'}</button><button class="sch-btn">View details</button></div></div>`).join('');
 }
 function toggleSch(i){ SCHOLARSHIPS[i].saved=!SCHOLARSHIPS[i].saved; renderAfford(); }
+
+// ═══════ MATCHES / FIT / STRATEGY / TIMELINE / SYSTEM ═══════
+function renderMatches(){
+  const grid=document.getElementById('matches-grid');
+  if(!grid) return;
+  grid.innerHTML=MATCHES.map(c=>`
+    <article class="cc">
+      <div class="cc-top">
+        <div>
+          <div class="cc-name">${c.name}</div>
+          <div class="cc-loc">${c.loc} · ${c.type}</div>
+        </div>
+        ${ring(c.score)}
+      </div>
+      <div class="tags">
+        <span class="tag ${c.tag==='reach'?'t-reach':c.tag==='safety'?'t-safety':'t-target'}">${c.tag.charAt(0).toUpperCase()+c.tag.slice(1)}</span>
+        <span class="tag t-aff-${c.afford==='good'?'g':c.afford==='warn'?'w':'b'}">${c.afford==='good'?'Likely affordable':c.afford==='warn'?'Needs review':'High risk'}</span>
+        <span class="tag t-major">${c.majorStrength}</span>
+      </div>
+      <div class="glance-copy" style="margin-bottom:10px">${c.why}</div>
+      <div class="career-box">
+        <div class="career-box-title">Why it fits</div>
+        <div class="glance-copy">${c.why}</div>
+        <div class="career-box-title" style="margin-top:10px">Main tradeoff</div>
+        <div class="glance-copy">${c.tradeoff}</div>
+      </div>
+      <div class="outcomes-row">
+        <span class="out-item"><strong>${c.acceptance}</strong> acceptance</span>
+        <span class="out-item">·</span>
+        <span class="out-item"><strong>${c.cost}</strong> net cost</span>
+        <span class="out-item">·</span>
+        <span class="out-item"><strong>${c.gradRate}%</strong> grad rate</span>
+        <span class="out-item">·</span>
+        <span class="out-item"><strong>${c.earnings}</strong> median earnings</span>
+      </div>
+      <div style="margin-top:12px">
+        <div class="meter"><span style="width:${c.score}%"></span></div>
+      </div>
+    </article>
+  `).join('');
+}
+
+function renderFit(){
+  const stack=document.getElementById('fit-stack');
+  const why=document.getElementById('fit-meaning');
+  if(stack) stack.innerHTML=FIT_SECTIONS.map(([name,score,copy,concern,next])=>`
+    <section class="breakdown-item">
+      <div class="breakdown-head">
+        <div class="breakdown-name">${name}</div>
+        <div class="breakdown-score">${score}</div>
+      </div>
+      <div class="breakdown-copy">${copy}</div>
+      <div class="breakdown-footer">
+        <span class="mini-chip">Potential concern: ${concern}</span>
+        <span class="mini-chip">Next step: ${next}</span>
+      </div>
+    </section>
+  `).join('');
+  if(why) why.textContent="UC Davis is strong on academics and outcomes, but the cost risk is high enough that it should stay a reach until your scholarship plan is clearer. Oregon schools are the most practical balance of fit, support, and affordability for you right now.";
+}
+
+function renderAdmissions(){
+  const list=document.getElementById('admissions-list');
+  if(list){
+    list.innerHTML=COLLEGES.map(c=>`
+      <article class="timeline-item" style="grid-template-columns: 14px minmax(0,1fr) 220px">
+        <div class="timeline-dot" style="background:${c.tag==='reach'?'var(--purple)':c.tag==='target'?'var(--cb-blue)':'var(--teal)'}"></div>
+        <div>
+          <h5>${c.name}</h5>
+          <p>${c.cost} · ${c.tag.charAt(0).toUpperCase()+c.tag.slice(1)} · ${c.afford==='bad'?'Cost risk':'Admissions looks manageable'}</p>
+        </div>
+        <div class="timeline-meta">
+          <span class="chip">${c.tag==='reach'?'Add target schools':c.tag==='target'?'Balanced slot':'Likely slot'}</span>
+          <span style="font-size:12px;color:var(--muted)">${c.action==='remove'?'Review priority':'Keep in plan'}</span>
+        </div>
+      </article>
+    `).join('');
+  }
+}
+
+function renderTimeline(){
+  const wrap=document.getElementById('timeline-months');
+  if(!wrap) return;
+  wrap.innerHTML=TIMELINE_MONTHS.map(m=>`
+    <section class="timeline-month">
+      <h4>${m.month}</h4>
+      <div class="timeline-list">
+        ${m.items.map(item=>`
+          <div class="timeline-item">
+            <div class="timeline-dot" style="background:${item.priority==='High'?'var(--red)':item.priority==='Med'?'var(--amber)':'var(--teal)'}"></div>
+            <div>
+              <h5>${item.title}</h5>
+              <p>${item.detail} Related school: ${item.school}</p>
+            </div>
+            <div class="timeline-meta">
+              <span class="chip">${item.status}</span>
+              <span style="font-size:12px;color:var(--muted)">${item.deadline} · ${item.time}</span>
+              <button class="cc-btn" style="padding:5px 10px">AI help</button>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    </section>
+  `).join('');
+}
+
+function renderSystem(){
+  const swatches=document.getElementById('system-swatches');
+  const tokens=document.getElementById('system-tokens');
+  if(swatches) swatches.innerHTML=DESIGN_TOKENS.map(t=>`<div class="swatch" style="background:${t.value}" title="${t.label}"></div>`).join('');
+  if(tokens) tokens.innerHTML=[
+    'Source Sans 3 for body copy and UI labels',
+    'Navy for structure and trust',
+    'Blue for interactivity and data emphasis',
+    'Teal for success and next steps',
+    'Cream backgrounds for a calm academic feel',
+    'Rounded 24px cards for a premium student product'
+  ].map(t=>`<span class="tok">${t}</span>`).join('');
+}
 
 // ═══════ AI COUNSELOR ═══════
 function acAsk(q){
